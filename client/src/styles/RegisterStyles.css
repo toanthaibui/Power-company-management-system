@@ -1,0 +1,25 @@
+.form-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.register-form{
+    border: 1px solid gray;
+    padding: 30px;
+    width: 30%;
+}
+
+.form-container-staff {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+}
+
+.register-form-staff {
+    padding: 30px;
+    width: 50%;
+    text-align: center;
+}
