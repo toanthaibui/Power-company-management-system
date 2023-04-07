@@ -1,6 +1,10 @@
 const staffModel = require("../models/staffModels");
 const appointmentModel = require("../models/appointmentModel");
 const userModel = require("../models/userModels");
+const electricModel = require("../models/electricModel");
+const billModel = require("../models/billModel");
+const customerModel = require("../models/customerModel");
+const priceModel = require("../models/priceModel");
 
 const getStaffInfoController = async (req, res) => {
   try {
@@ -111,10 +115,76 @@ const updateStatusController = async (req, res) => {
   }
 };
 
+const setElectricNoteController = async (req, res) => {
+  try {
+    const newElectric = await electricModel({ ...req.body, status: "0" });
+    await newElectric.save();
+    res.status(201).send({
+      success: true,
+      message: "Chỉ số điện tháng này đã được thêm",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Xảy ra lỗi trong thêm chỉ số điện",
+    });
+  }
+};
+
+const getElectricCustomerController = async (req, res) => {
+  try {
+    const electric = await electricModel.find({
+      customerId: req.body.customerId,
+    });
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: electric,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const setBillController = async (req, res) => {
+  try {
+    const electric = await electricModel.findOne({ _id: req.body.electricId });
+    const customer = await customerModel.findOne({ _id: electric.customerId });
+    const price = await priceModel.findOne({ name: customer.purpose });
+    const total = electric.score * price.price;
+    const newBill = await billModel({ electricId: electric._id, price: total });
+    await newBill.save();
+    const electricstatus = await electricModel.findByIdAndUpdate(electric._id, {
+      status: "1",
+    });
+    res.status(201).send({
+      success: true,
+      message: "Hóa đơn đã được tạo",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Xảy ra lỗi tron khi tạo hóa đơn",
+    });
+  }
+};
+
 module.exports = {
   getStaffInfoController,
   updateProfileController,
   getStaffByIdController,
   staffAppointmentsController,
   updateStatusController,
+  setElectricNoteController,
+  getElectricCustomerController,
+  setBillController,
 };

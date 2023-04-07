@@ -39,6 +39,11 @@ const Layout = ({ children }) => {
       icon: "fa-solid fa-user-doctor",
     },
     {
+      name: "Chỉ số điện",
+      path: `/customer/score-month/${user?._id}`,
+      icon: "fa-solid fa-calendar-days",
+    },
+    {
       name: "Hồ sơ",
       path: `/customer/profile/${user?._id}`,
       icon: "fa-solid fa-user",

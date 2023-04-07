@@ -18,6 +18,10 @@ const electricSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    status: {
+      type: String,
+      default: "0",
+    },
   },
   { timestamps: true }
 );

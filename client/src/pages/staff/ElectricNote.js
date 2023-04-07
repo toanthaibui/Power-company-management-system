@@ -73,9 +73,13 @@ const ElectricNote = () => {
       title: "Hành động",
       dataIndex: "actions",
       render: (text, record) => (
-        <div className="d-flex">
-          <Link to={`/staff/set-electric-note/${record.userId}/${staff._id}`}>
+        <div className="text-center">
+          <Link to={`/staff/set-electric-note/${record._id}/${staff._id}`}>
             <button className="btn btn-secondary">Ghi Điện</button>
+          </Link>
+          <p></p>
+          <Link to={`/staff/all-electric-note/${record._id}`}>
+            <button className="btn btn-info">Chỉ số điện hàng tháng</button>
           </Link>
         </div>
       ),
@@ -91,7 +95,7 @@ const ElectricNote = () => {
   return (
     <Layout>
       <h1 className="text-center m-3">Ghi Điện</h1>
-      <Table columns={columns} dataSource={customer} />
+      <Table className="m-3" columns={columns} dataSource={customer} />
     </Layout>
   );
 };

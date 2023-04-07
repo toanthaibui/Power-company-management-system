@@ -5,6 +5,9 @@ const {
   getStaffByIdController,
   staffAppointmentsController,
   updateStatusController,
+  setElectricNoteController,
+  getElectricCustomerController,
+  setBillController,
 } = require("../controllers/staffCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -23,5 +26,15 @@ router.get("/staff-appointments", authMiddleware, staffAppointmentsController);
 
 //Post update status
 router.post("/update-status", authMiddleware, updateStatusController);
+
+router.post("/setElectricNote", authMiddleware, setElectricNoteController);
+
+router.post(
+  "/getElectricCustomer",
+  authMiddleware,
+  getElectricCustomerController
+);
+
+router.post("/setBill", authMiddleware, setBillController);
 
 module.exports = router;

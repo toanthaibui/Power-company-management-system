@@ -27,6 +27,8 @@ import UpdateSchedule from "./pages/admin/UpdateSchedule";
 import StaffSchedule from "./pages/staff/StaffSchedule";
 import ElectricNote from "./pages/staff/ElectricNote";
 import SetElectricNote from "./pages/staff/SetElectricNote";
+import AllElectricNote from "./pages/staff/AllElectricNote";
+import ScoreMonth from "./pages/customer/ScoreMonth";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -117,6 +119,14 @@ function App() {
               }
             />
             <Route
+              path="/customer/score-month/:userId"
+              element={
+                <ProtectedRoute>
+                  <ScoreMonth />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/staff/book-appointment/:staffId"
               element={
                 <ProtectedRoute>
@@ -137,6 +147,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SetElectricNote />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/staff/all-electric-note/:customerId"
+              element={
+                <ProtectedRoute>
+                  <AllElectricNote />
                 </ProtectedRoute>
               }
             />
