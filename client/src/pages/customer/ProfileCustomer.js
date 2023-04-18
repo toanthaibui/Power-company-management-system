@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
+import Main from "../../components/layout/Main";
+
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { Col, Form, Input, Row, message, Select } from "antd";
+import { Col, Form, Input, Row, message, Select, Card } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
@@ -66,7 +68,7 @@ const ProfileCustomer = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
-        navigate("/");
+        navigate(`/customer/profile/${params.id}`);
       } else {
         message.error(res.data.message);
       }
@@ -126,145 +128,149 @@ const ProfileCustomer = () => {
   }, []);
 
   return (
-    <Layout>
-      <h1 className="text-center">Thông tin đăng ký lắp đặt điện</h1>
-      {customer && (
-        <Form
-          layout="vertical"
-          onFinish={handleFinish}
-          className="m-3"
-          initialValues={{
-            ...customer,
-          }}
-        >
-          <h4 className="">Personal Details</h4>
-          <Row gutter={20}>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Họ tên người yêu cầu:"
-                name="fullName"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input type="text" placeholder="Nhập vào họ tên của bạn" />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Điện thoại di động:"
-                name="phone"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Nhập vào số điện thoại của bạn"
-                />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Email:"
-                name="email"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input type="text" placeholder="Nhập vào email của bạn" />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Số chứng minh thư/CCCD:"
-                name="cccd"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input type="text" placeholder="Nhập vào CCCD của bạn" />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Quận/Huyện:"
-                name="districtnon"
-                required
-                rules={[{ required: true }]}
-              >
-                <Select
-                  placeholder="Chọn Quận/Huyện của bạn"
-                  onChange={getWard}
-                  allowClear
+    <Main>
+      <Card
+        bordered={false}
+        className="criclebox  mb-24"
+        title="Hồ sơ đăng ký lắp đặt điện"
+      >
+        {customer && (
+          <Form
+            layout="vertical"
+            onFinish={handleFinish}
+            className=""
+            initialValues={{
+              ...customer,
+            }}
+          >
+            <Row gutter={20}>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Họ tên người yêu cầu:"
+                  name="fullName"
+                  required
+                  rules={[{ required: true }]}
                 >
-                  {district?.map((item, idx) => (
-                    <Option value={item.district_id} key={idx}>
-                      {item.district_name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Phường/Xã:"
-                name="wardnon"
-                required
-                rules={[{ required: true }]}
-              >
-                <Select placeholder="Chọn Phường/Xã của bạn">
-                  {ward.length !== 0 &&
-                    ward?.map((item, idx) => (
-                      <Option key={idx} value={item.ward_id}>
-                        {item.ward_name}
+                  <Input type="text" placeholder="Nhập vào họ tên của bạn" />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Điện thoại di động:"
+                  name="phone"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Nhập vào số điện thoại của bạn"
+                  />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Email:"
+                  name="email"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input type="text" placeholder="Nhập vào email của bạn" />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Số chứng minh thư/CCCD:"
+                  name="cccd"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input type="text" placeholder="Nhập vào CCCD của bạn" />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Quận/Huyện:"
+                  name="districtnon"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Select
+                    placeholder="Chọn Quận/Huyện của bạn"
+                    onChange={getWard}
+                    allowClear
+                  >
+                    {district?.map((item, idx) => (
+                      <Option value={item.district_id} key={idx}>
+                        {item.district_name}
                       </Option>
                     ))}
-                </Select>
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Đường/Phố:"
-                name="road"
-                required
-                rules={[{ required: true }]}
-              >
-                <Input type="text" placeholder="Nhập vào Đường/Phố của bạn" />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Số nhà:"
-                name="numberHouse"
-                required
-                rules={[{ required: false }]}
-              >
-                <Input type="text" placeholder="Nhập vào Số nhà của bạn" />
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}>
-              <FormItem
-                label="Mục đích sử dụng:"
-                name="purpose"
-                required
-                rules={[{ required: true }]}
-              >
-                <Select placeholder="Nhập vào mục đích sử dụng của bạn">
-                  {prices?.map((item, idx) => (
-                    <Option key={idx} value={item.name}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormItem>
-            </Col>
-            <Col xs={24} md={24} lg={8}></Col>
-            <Col xs={24} md={24} lg={8}>
-              <button className="btn btn-primary form-btn" type="submit">
-                Đăng ký
-              </button>
-            </Col>
-          </Row>
-        </Form>
-      )}
-    </Layout>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Phường/Xã:"
+                  name="wardnon"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Select placeholder="Chọn Phường/Xã của bạn">
+                    {ward.length !== 0 &&
+                      ward?.map((item, idx) => (
+                        <Option key={idx} value={item.ward_id}>
+                          {item.ward_name}
+                        </Option>
+                      ))}
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Đường/Phố:"
+                  name="road"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Input type="text" placeholder="Nhập vào Đường/Phố của bạn" />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Số nhà:"
+                  name="numberHouse"
+                  required
+                  rules={[{ required: false }]}
+                >
+                  <Input type="text" placeholder="Nhập vào Số nhà của bạn" />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}>
+                <FormItem
+                  label="Mục đích sử dụng:"
+                  name="purpose"
+                  required
+                  rules={[{ required: true }]}
+                >
+                  <Select placeholder="Nhập vào mục đích sử dụng của bạn">
+                    {prices?.map((item, idx) => (
+                      <Option key={idx} value={item.name}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col xs={24} md={24} lg={8}></Col>
+              <Col xs={24} md={24} lg={8}>
+                <button className="btn btn-primary form-btn" type="submit">
+                  Đăng ký
+                </button>
+              </Col>
+            </Row>
+          </Form>
+        )}
+      </Card>
+    </Main>
   );
 };
 

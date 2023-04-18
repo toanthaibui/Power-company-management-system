@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "./../components/Layout";
-import { message, Tabs } from "antd";
+import Main from "../components/layout/Main";
+import { Card, message, Tabs } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
 import { useNavigate } from "react-router-dom";
@@ -66,53 +67,57 @@ const NotificationPage = () => {
     }
   };
   return (
-    <Layout>
-      <h4 className="p-3 text-center">Notification Page</h4>
-      <Tabs>
-        <Tabs.TabPane tab="unRead" key={0}>
-          <div className="d-flex justify-content-end">
-            <h4
-              className="p-2 text-primary"
-              onClick={handleMarkAllRead}
-              style={{ cursor: "pointer" }}
-            >
-              Mark All Read
-            </h4>
-          </div>
-          {user?.notification.map((notificationMgs) => (
-            <div className="card" style={{ cursor: "pointer" }}>
-              <div
-                className="card-text"
-                onClick={() => navigate(notificationMgs.onClickPath)}
+    <Main>
+      <Card bordered={false} className="criclebox  mb-24" title="Thông báo">
+        <Tabs>
+          <Tabs.TabPane tab="Chưa xem" key={0}>
+            <div className="d-flex justify-content-end">
+              <h4
+                className="p-2 text-primary"
+                onClick={handleMarkAllRead}
+                style={{ cursor: "pointer" }}
               >
-                {notificationMgs.message}
-              </div>
+                Đánh dấu tất cả đã đọc
+              </h4>
             </div>
-          ))}
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Read" key={1}>
-          <div className="d-flex justify-content-end">
-            <h4
-              className="p-2 text-danger"
-              onClick={handleDeleteAllRead}
-              style={{ cursor: "pointer" }}
-            >
-              Delete All Read
-            </h4>
-          </div>
-          {user?.seennotification.map((notificationMgs) => (
-            <div className="card" style={{ cursor: "pointer" }}>
-              <div
-                className="card-text"
-                onClick={() => navigate(notificationMgs.onClickPath)}
+            {user?.notification.map((notificationMgs) => (
+              <div className="card" style={{ cursor: "pointer" }}>
+                <div
+                  className="card-text"
+                  onClick={() => navigate(notificationMgs.onClickPath)}
+                >
+                  <p>{notificationMgs.message}</p>
+                </div>
+              </div>
+            ))}
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Đã xem" key={1}>
+            <div className="d-flex justify-content-end">
+              <h4
+                className="p-2 text-danger"
+                onClick={handleDeleteAllRead}
+                style={{ cursor: "pointer" }}
               >
-                {notificationMgs.message}
-              </div>
+                Xóa tất cả
+              </h4>
             </div>
-          ))}
-        </Tabs.TabPane>
-      </Tabs>
-    </Layout>
+            {user?.seennotification.map((notificationMgs) => (
+              <Card style={{ cursor: "pointer" }}>
+                <div
+                  className="card-text"
+                  onClick={() => navigate(notificationMgs.onClickPath)}
+                >
+                  <p>{notificationMgs.message}</p>
+                </div>
+                <p></p>
+              </Card>
+            ))}
+          </Tabs.TabPane>
+        </Tabs>
+        <br />
+        <br />
+      </Card>
+    </Main>
   );
 };
 

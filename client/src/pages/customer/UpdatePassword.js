@@ -1,7 +1,9 @@
-import { Form, Input, message } from "antd";
+import { Card, Form, Input, message } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import React from "react";
 import Layout from "./../../components/Layout";
+import Main from "../../components/layout/Main";
+
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
 import axios from "axios";
@@ -34,9 +36,8 @@ const UpdatePassword = () => {
     }
   };
   return (
-    <Layout>
-      <h1 className="text-center">Đổi mật khẩu</h1>
-      <>
+    <Main>
+      <Card bordered={false} className="criclebox mb-24" title="Đổi mật khẩu">
         <div className="form-container-staff">
           <Form
             layout="vertical"
@@ -69,8 +70,10 @@ const UpdatePassword = () => {
             </button>
           </Form>
         </div>
-      </>
-    </Layout>
+        <br />
+        <br />
+      </Card>
+    </Main>
   );
 };
 

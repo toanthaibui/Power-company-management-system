@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./../../components/Layout";
 import axios from "axios";
-import { message, Table } from "antd";
+import Main from "../../components/layout/Main";
+
+import { Button, Card, Col, message, Row, Table, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
 const Customers = () => {
@@ -42,6 +44,7 @@ const Customers = () => {
       message.error("Something Went Wrong");
     }
   };
+  const { Title } = Typography;
 
   useEffect(() => {
     getCustomers();
@@ -49,8 +52,14 @@ const Customers = () => {
 
   const columns = [
     {
-      title: "Tên",
+      title: "Khách hàng",
       dataIndex: "fullName",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.fullName}</Title>
+          <p>{record.email}</p>
+        </div>
+      ),
     },
     {
       title: "SĐT",
@@ -61,20 +70,13 @@ const Customers = () => {
       dataIndex: "cccd",
     },
     {
-      title: "Quận/Huyện",
-      dataIndex: "district",
-    },
-    {
-      title: "Phường/Xã",
-      dataIndex: "ward",
-    },
-    {
-      title: "Đường",
-      dataIndex: "road",
-    },
-    {
-      title: "Số nhà",
-      dataIndex: "numberHouse",
+      title: "Địa chỉ",
+      dataIndex: "address",
+      render: (text, record) => (
+        <span>
+          {record.numberHouse}, {record.road}, {record.ward}, {record.district}
+        </span>
+      ),
     },
     {
       title: "Mục đích sử dụng",
@@ -90,30 +92,32 @@ const Customers = () => {
       ),
     },
     {
-      title: "Hành động",
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
-        <div className="d-flex">
+        <div className="">
           {record.status === "0" ? (
             <div>
-              <button
-                className="btn btn-success"
+              <Button
+                className="tag-primary"
+                type="primary"
                 onClick={() => handleAccountStatus(record, "1")}
               >
                 Đồng ý
-              </button>
-              <br />
-              <br />
-              <button
-                className="btn btn-danger"
+              </Button>
+              &nbsp; &nbsp;
+              <Button
+                className="tag-badge"
                 onClick={() => handleAccountStatus(record, "2")}
               >
                 Từ Chối
-              </button>
+              </Button>
             </div>
           ) : (
             <Link to={`/print/${record.userId}`}>
-              <button className="btn btn-secondary">Lập biên bản</button>
+              <Button className="tag-primary" type="primary">
+                Lập biên bản
+              </Button>
             </Link>
           )}
         </div>
@@ -122,10 +126,27 @@ const Customers = () => {
   ];
 
   return (
-    <Layout>
-      <h1 className="text-center m-3">All Customers</h1>
-      <Table columns={columns} dataSource={customers} />
-    </Layout>
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Danh sách khách hàng"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={customers}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </Main>
   );
 };
 

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./../../components/Layout";
 import axios from "axios";
-import { message, Table } from "antd";
+import Main from "../../components/layout/Main";
+
+import { Button, Card, Col, message, Row, Table, Typography } from "antd";
 import { Link } from "react-router-dom";
+const { Title } = Typography;
 
 const Staffs = () => {
   const [staffs, setStaffs] = useState([]);
@@ -49,8 +52,14 @@ const Staffs = () => {
 
   const columns = [
     {
-      title: "Hộ tên",
+      title: "Nhân viên",
       dataIndex: "fullName",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.fullName}</Title>
+          <p>{record.email}</p>
+        </div>
+      ),
     },
     {
       title: "SĐT",
@@ -61,39 +70,39 @@ const Staffs = () => {
       dataIndex: "cccd",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
       title: "Địa chỉ",
       dataIndex: "address",
     },
     {
       title: "Chuyên môn",
       dataIndex: "specialization",
-    },
-    {
-      title: "Trình độ",
-      dataIndex: "level",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.specialization}</Title>
+          <p>{record.level}</p>
+        </div>
+      ),
     },
     {
       title: "Kinh nghiệm",
       dataIndex: "experience",
     },
     {
-      title: "Hành động",
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="text-center">
-          <button
-            className="btn btn-danger"
+          <Button
+            className="tag-badge"
             onClick={() => handleAccountStatus(record, "delete")}
           >
             Xóa
-          </button>
-          <p></p>
+          </Button>
+          &nbsp; &nbsp;
           <Link to={`/admin/schedule/setschedule/${record._id}`}>
-            <button className="btn btn-success">Xếp lịch</button>
+            <Button type="primary" className="tag-primary">
+              Xếp lịch
+            </Button>
           </Link>
         </div>
       ),
@@ -101,10 +110,27 @@ const Staffs = () => {
   ];
 
   return (
-    <Layout>
-      <h1 className="text-center m-3">All Staffs</h1>
-      <Table columns={columns} dataSource={staffs} />
-    </Layout>
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Danh sách nhân viên"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={staffs}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </Main>
   );
 };
 

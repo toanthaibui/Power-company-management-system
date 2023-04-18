@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { Table } from "antd";
+import { Button, Card, Col, Row, Table, Typography } from "antd";
+import Main from "../../components/layout/Main";
 
 const ElectricNote = () => {
   const params = useParams();
@@ -46,11 +47,18 @@ const ElectricNote = () => {
       console.log(error);
     }
   };
+  const { Title } = Typography;
 
   const columns = [
     {
       title: "Tên",
       dataIndex: "fullName",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.fullName}</Title>
+          <p>{record.email}</p>
+        </div>
+      ),
     },
     {
       title: "SĐT",
@@ -70,16 +78,18 @@ const ElectricNote = () => {
       dataIndex: "purpose",
     },
     {
-      title: "Hành động",
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="text-center">
           <Link to={`/staff/set-electric-note/${record._id}/${staff._id}`}>
-            <button className="btn btn-secondary">Ghi Điện</button>
+            <Button className="">Ghi Điện</Button>
           </Link>
-          <p></p>
+          &nbsp; &nbsp;
           <Link to={`/staff/all-electric-note/${record._id}`}>
-            <button className="btn btn-info">Chỉ số điện hàng tháng</button>
+            <Button className="tag-primary" type="primary">
+              Chỉ số điện hàng tháng
+            </Button>
           </Link>
         </div>
       ),
@@ -93,10 +103,27 @@ const ElectricNote = () => {
   }, []);
 
   return (
-    <Layout>
-      <h1 className="text-center m-3">Ghi Điện</h1>
-      <Table className="m-3" columns={columns} dataSource={customer} />
-    </Layout>
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Ghi điện"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={customer}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </Main>
   );
 };
 

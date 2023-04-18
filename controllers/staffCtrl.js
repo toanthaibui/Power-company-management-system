@@ -1,5 +1,4 @@
 const staffModel = require("../models/staffModels");
-const appointmentModel = require("../models/appointmentModel");
 const userModel = require("../models/userModels");
 const electricModel = require("../models/electricModel");
 const billModel = require("../models/billModel");
@@ -65,56 +64,6 @@ const getStaffByIdController = async (req, res) => {
   }
 };
 
-const staffAppointmentsController = async (req, res) => {
-  try {
-    const staff = await staffModel.findOne({ userId: req.body.userId });
-    const appointments = await appointmentModel.find({
-      staffId: staff._id,
-    });
-    res.status(200).send({
-      success: true,
-      message: "Staff Appointments fetch Successfully",
-      data: appointments,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Error in Staff Appointments",
-    });
-  }
-};
-
-const updateStatusController = async (req, res) => {
-  try {
-    const { appointmentsId, status } = req.body;
-    const appointments = await appointmentModel.findByIdAndUpdate(
-      appointmentsId,
-      { status }
-    );
-    const user = await userModel.findOne({ _id: appointments.userId });
-    const notification = user.notification;
-    notification.push({
-      type: "status-updated",
-      message: `your appointment has been updated ${status}`,
-      onCLickPath: "/staff-appointments",
-    });
-    await user.save();
-    res.status(200).send({
-      success: true,
-      message: "Appointment Status Updated",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Error In Update Status",
-    });
-  }
-};
-
 const setElectricNoteController = async (req, res) => {
   try {
     const newElectric = await electricModel({ ...req.body, status: "0" });
@@ -142,6 +91,46 @@ const getElectricCustomerController = async (req, res) => {
       success: true,
       message: "Single staff info fetched",
       data: electric,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const getElectricInfoController = async (req, res) => {
+  try {
+    const electric = await electricModel.findById({
+      _id: req.body.electricId,
+    });
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: electric,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const getBillByElectricController = async (req, res) => {
+  try {
+    const bill = await billModel.findOne({
+      electricId: req.body.electricId,
+    });
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: bill,
     });
   } catch (error) {
     console.log(error);
@@ -182,9 +171,9 @@ module.exports = {
   getStaffInfoController,
   updateProfileController,
   getStaffByIdController,
-  staffAppointmentsController,
-  updateStatusController,
   setElectricNoteController,
   getElectricCustomerController,
   setBillController,
+  getElectricInfoController,
+  getBillByElectricController,
 };

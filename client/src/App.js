@@ -12,9 +12,6 @@ import NotificationPage from "./pages/NotificationPage";
 import Users from "./pages/admin/Users";
 import Staffs from "./pages/admin/Staffs";
 import Profile from "./pages/staff/Profile";
-import BookingPage from "./pages/BookingPage";
-import Appointments from "./pages/Appointments";
-import StaffAppointments from "./pages/staff/StaffAppointments";
 import UpdatePassword from "./pages/customer/UpdatePassword";
 import ApplyCustomer from "./pages/ApplyCustomer";
 import Customers from "./pages/admin/Customers";
@@ -29,6 +26,16 @@ import ElectricNote from "./pages/staff/ElectricNote";
 import SetElectricNote from "./pages/staff/SetElectricNote";
 import AllElectricNote from "./pages/staff/AllElectricNote";
 import ScoreMonth from "./pages/customer/ScoreMonth";
+import PrintBill from "./pages/staff/PrintBill";
+import Bill from "./pages/staff/Bill";
+import BillCustomer from "./pages/customer/BillCustomer";
+import ScheduleStaff from "./pages/admin/ScheduleStaff";
+import BillAdmin from "./pages/admin/BillAdmin";
+import BillDetail from "./pages/admin/BillDetail";
+import SignIn from "./pages/SignIn";
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
+import "antd/dist/reset.css";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -87,10 +94,34 @@ function App() {
               }
             />
             <Route
-              path="/admin/schedule"
+              path="/admin/bill-admin"
+              element={
+                <ProtectedRoute>
+                  <BillAdmin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/bill-admin/:billId"
+              element={
+                <ProtectedRoute>
+                  <BillDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/schedule/:staffId"
               element={
                 <ProtectedRoute>
                   <Schedule />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/schedule-staff"
+              element={
+                <ProtectedRoute>
+                  <ScheduleStaff />
                 </ProtectedRoute>
               }
             />
@@ -127,10 +158,26 @@ function App() {
               }
             />
             <Route
-              path="/staff/book-appointment/:staffId"
+              path="/staff/print-bill/:electricId/:customerId"
               element={
                 <ProtectedRoute>
-                  <BookingPage />
+                  <PrintBill />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/staff/bill/:electricId/:customerId"
+              element={
+                <ProtectedRoute>
+                  <Bill />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/customer/bill/:electricId/:staffId"
+              element={
+                <ProtectedRoute>
+                  <BillCustomer />
                 </ProtectedRoute>
               }
             />
@@ -191,6 +238,14 @@ function App() {
               }
             />
             <Route
+              path="/signin"
+              element={
+                <ProtectedRoute>
+                  <SignIn />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/print/:id"
               element={
                 <ProtectedRoute>
@@ -211,22 +266,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <UpdateSchedule />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/appointments"
-              element={
-                <ProtectedRoute>
-                  <Appointments />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/staff-appointments"
-              element={
-                <ProtectedRoute>
-                  <StaffAppointments />
                 </ProtectedRoute>
               }
             />

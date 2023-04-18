@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import Layout from "./../../components/Layout";
 import Form from "antd/es/form/Form";
 import FormItem from "antd/es/form/FormItem";
-import { Col, DatePicker, Input, Row, message } from "antd";
+import { Card, Col, DatePicker, Input, Row, message } from "antd";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
+import Main from "../../components/layout/Main";
 
 const SetElectricNote = () => {
   const params = useParams();
@@ -63,80 +64,82 @@ const SetElectricNote = () => {
   }, []);
 
   return (
-    <Layout>
-      <>
-        <>
-          <br />
-          <div className="card m-5" style={{ cursor: "pointer" }}>
-            <div className="card-header text-center">
-              <b>Cập nhật chỉ số điện thàng háng</b>
-            </div>
-            <div className="card-body">
-              <Row>
-                <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                  {customer && (
-                    <div>
-                      <p>
-                        <b>Họ tên: </b> {customer.fullName}
-                      </p>
-                      <p>
-                        <b>SĐT: </b> {customer.phone}
-                      </p>
-                      <p>
-                        <b>Căn cước công dân: </b> {customer.cccd}
-                      </p>
-                      <p>
-                        <b>Email: </b> {customer.email}
-                      </p>
-                      <p>
-                        <b>Địa chỉ: </b> {customer.numberHouse}, {customer.road}
-                        , {customer.ward}, {customer.district}
-                      </p>
-                      <p>
-                        <b>Mục đích sử dụng: </b> {customer.purpose}
-                      </p>
-                    </div>
-                  )}
-                </Col>
-                <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                  <Form
-                    layout="vertical"
-                    className="m-3"
-                    onFinish={handleFinish}
-                  >
-                    <FormItem
-                      label="Thời gian:"
-                      name="date"
-                      required
-                      rules={[{ required: true }]}
-                    >
-                      <DatePicker
-                        picker="month"
-                        placeholder="Chọn tháng"
-                      ></DatePicker>
-                    </FormItem>
-                    <FormItem
-                      label="Chỉ số điện:   "
-                      name="score"
-                      required
-                      rules={[{ required: true }]}
-                    >
-                      <Input
-                        type="text"
-                        placeholder="Nhập vào chỉ số điện tháng này"
-                      />
-                    </FormItem>
-                    <button className="btn btn-primary form-btn" type="submit">
-                      Ghi điện
-                    </button>
-                  </Form>
-                </Col>
-              </Row>
-            </div>
-          </div>
-        </>
-      </>
-    </Layout>
+    <Main>
+      <Row gutter={[24, 0]}>
+        <Col span={24} md={16} className="mb-24">
+          <Card
+            className="header-solid h-full"
+            bordered={false}
+            title={[
+              <h6 className="font-semibold m-0">
+                Cập nhật chỉ số điện hàng tháng
+              </h6>,
+            ]}
+            bodyStyle={{ paddingTop: "0" }}
+          >
+            <Form layout="vertical" className="m-3" onFinish={handleFinish}>
+              <FormItem
+                label="Thời gian:"
+                name="date"
+                required
+                rules={[{ required: true }]}
+              >
+                <DatePicker
+                  picker="month"
+                  placeholder="Chọn tháng"
+                ></DatePicker>
+              </FormItem>
+              <FormItem
+                label="Chỉ số điện:   "
+                name="score"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Nhập vào chỉ số điện tháng này"
+                />
+              </FormItem>
+              <button className="btn btn-primary form-btn" type="submit">
+                Ghi điện
+              </button>
+            </Form>
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            bodyStyle={{ paddingTop: 0 }}
+            className="header-solid h-full  ant-list-yes"
+            title={<h6 className="font-semibold m-0">Thông tin khách hàng</h6>}
+          >
+            {customer && (
+              <div>
+                <p>
+                  <b>Họ tên: </b> {customer.fullName}
+                </p>
+                <p>
+                  <b>SĐT: </b> {customer.phone}
+                </p>
+                <p>
+                  <b>Căn cước công dân: </b> {customer.cccd}
+                </p>
+                <p>
+                  <b>Email: </b> {customer.email}
+                </p>
+                <p>
+                  <b>Địa chỉ: </b> {customer.numberHouse}, {customer.road},{" "}
+                  {customer.ward}, {customer.district}
+                </p>
+                <p>
+                  <b>Mục đích sử dụng: </b> {customer.purpose}
+                </p>
+              </div>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </Main>
   );
 };
 

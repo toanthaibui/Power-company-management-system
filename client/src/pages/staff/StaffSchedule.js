@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
 import { useParams } from "react-router-dom";
+import Main from "../../components/layout/Main";
 import axios from "axios";
 import moment from "moment";
-import { Table } from "antd";
+import { Card, Col, Row, Table } from "antd";
 
 const StaffSchedule = () => {
   const params = useParams();
@@ -60,13 +61,27 @@ const StaffSchedule = () => {
   }, []);
 
   return (
-    <Layout>
-      <br />
-      <h1 className="text-center m-3">Lịch làm việc</h1>
-      <div className="m-4">
-        <Table columns={columns} dataSource={schedules} />
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Lịch làm việc"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={schedules}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
       </div>
-    </Layout>
+    </Main>
   );
 };
 

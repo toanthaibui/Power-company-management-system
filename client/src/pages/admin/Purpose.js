@@ -1,7 +1,20 @@
-import { Col, Form, Input, message, Row, Select, Table } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Table,
+  Typography,
+} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { Option } from "antd/es/mentions";
 import axios from "axios";
+import Main from "../../components/layout/Main";
+
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
@@ -99,27 +112,30 @@ const Purpose = () => {
       message.error("Something Went Wrong");
     }
   };
+  const { Title } = Typography;
 
   const columns = [
     {
-      title: "Tên dịch vụ",
+      title: "Dịch vụ",
       dataIndex: "name",
-    },
-    {
-      title: "Giá dịch vụ",
-      dataIndex: "price",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.name}</Title>
+          <p>{record.price}</p>
+        </div>
+      ),
     },
     {
       title: "Hành động",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
-          <button
-            className="btn btn-danger"
+          <Button
+            className="tag-badge"
             onClick={() => handlePriceStatus(record)}
           >
             Xóa
-          </button>
+          </Button>
         </div>
       ),
     },
@@ -129,76 +145,92 @@ const Purpose = () => {
     getPrices();
   }, []);
   return (
-    <Layout>
-      <h1 className="text-center">Quản lý giá dịch vụ</h1>
-      <br />
-      <br />
-      <br />
-      <Row>
-        <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
-          <h4 className="text-center">Thêm dịch vụ</h4>
-          <Form layout="vertical" onFinish={onfinishHandler} className="m-3">
-            <FormItem
-              label="Tên dịch vụ"
-              name="name"
-              required
-              rules={[{ required: true }]}
-            >
-              <Input type="text" placeholder="Nhập tên dịch vụ" />
-            </FormItem>
-            <FormItem
-              label="Giá dịch vụ"
-              name="price"
-              required
-              rules={[{ required: true }]}
-            >
-              <Input type="text" placeholder="Nhập tên dịch vụ" />
-            </FormItem>
-            <button className="btn btn-primary form-btn" type="submit">
-              Thêm
-            </button>
-          </Form>
-        </Col>
-        <Col xs={{ span: 5, offset: 1 }}>
-          <h4 className="text-center">Bảng các dịch vụ</h4>
-          <Table dataSource={prices} columns={columns}></Table>
-        </Col>
-        <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
-          <h4 className="text-center">Cập nhật giá dịch vụ</h4>
-          <Form
-            layout="vertical"
-            onFinish={onfinishHandlerUpdate}
-            className="m-3"
+    <Main>
+      <Row gutter={[24, 0]} className="m-5">
+        <Col span={24} md={8} className="mb-24 ">
+          <Card
+            bordered={false}
+            className="header-solid h-full"
+            title={<h6 className="font-semibold m-0">Thêm dịch vụ</h6>}
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
-            <FormItem
-              label="Tên dịch vụ"
-              name="name"
-              required
-              rules={[{ required: true }]}
+            <Form layout="vertical" onFinish={onfinishHandler} className="m-3">
+              <FormItem
+                label="Tên dịch vụ"
+                name="name"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input type="text" placeholder="Nhập tên dịch vụ" />
+              </FormItem>
+              <FormItem
+                label="Giá dịch vụ"
+                name="price"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input type="text" placeholder="Nhập tên dịch vụ" />
+              </FormItem>
+              <button className="btn btn-primary form-btn" type="submit">
+                Thêm
+              </button>
+            </Form>
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            title={<h6 className="font-semibold m-0">Bảng dịch vụ</h6>}
+            className="header-solid h-full card-profile-information"
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+          >
+            <div className="table-responsive">
+              <Table dataSource={prices} columns={columns}></Table>
+            </div>
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            title={<h6 className="font-semibold m-0">Cập nhật giá dịch vụ</h6>}
+            className="header-solid h-full"
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+          >
+            <Form
+              layout="vertical"
+              onFinish={onfinishHandlerUpdate}
+              className="m-3"
             >
-              <Select placeholder="Chọn loại dịch vụ">
-                {prices?.map((item, idx) => (
-                  <Option value={item.name} key={idx}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
-            </FormItem>
-            <FormItem
-              label="Giá dịch vụ"
-              name="price"
-              required
-              rules={[{ required: true }]}
-            >
-              <Input type="text" placeholder="Nhập tên dịch vụ" />
-            </FormItem>
-            <button className="btn btn-primary form-btn" type="submit">
-              Cập nhật
-            </button>
-          </Form>
+              <FormItem
+                label="Tên dịch vụ"
+                name="name"
+                required
+                rules={[{ required: true }]}
+              >
+                <Select placeholder="Chọn loại dịch vụ">
+                  {prices?.map((item, idx) => (
+                    <Option value={item.name} key={idx}>
+                      {item.name}
+                    </Option>
+                  ))}
+                </Select>
+              </FormItem>
+              <FormItem
+                label="Giá dịch vụ"
+                name="price"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input type="text" placeholder="Nhập tên dịch vụ" />
+              </FormItem>
+              <button className="btn btn-primary form-btn" type="submit">
+                Cập nhật
+              </button>
+            </Form>
+          </Card>
         </Col>
       </Row>
-    </Layout>
+    </Main>
   );
 };
 

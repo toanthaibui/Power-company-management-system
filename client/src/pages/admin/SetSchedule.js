@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Col, Form, Input, Row, Select, message } from "antd";
+import Main from "../../components/layout/Main";
+
+import { Card, Col, Form, Input, Row, Select, message } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { Option } from "antd/es/mentions";
 import { useDispatch, useSelector } from "react-redux";
@@ -99,113 +101,110 @@ const SetSchedule = () => {
   }, []);
 
   return (
-    <Layout>
-      <>
-        {sta?.map((item, idx) => (
-          <>
-            <br />
-            <div className="card m-5" style={{ cursor: "pointer" }}>
-              <div className="card-header text-center">
-                <b>Xếp lịch làm việc nhân viên</b>
+    <Main>
+      <Row gutter={[24, 0]}>
+        <Col span={24} md={16} className="mb-24">
+          <Card
+            className="header-solid h-full"
+            bordered={false}
+            title={[<h6 className="font-semibold m-0">Xếp lịch làm việc</h6>]}
+            bodyStyle={{ paddingTop: "0" }}
+          >
+            <Form layout="vertical" className="m-3" onFinish={handleFinish}>
+              <FormItem
+                label="Ngày bắt đầu"
+                name="begin"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input type="date" placeholder="Chọn ngày bắt đầu" />
+              </FormItem>
+              <FormItem
+                label="Ngày kết thúc"
+                name="end"
+                required
+                rules={[{ required: true }]}
+              >
+                <Input type="date" placeholder="Chọn ngày kết thúc" />
+              </FormItem>
+              <FormItem
+                label="Quận/Huyện:"
+                name="districtnon"
+                required
+                rules={[{ required: true }]}
+              >
+                <Select
+                  placeholder="Chọn Quận/Huyện của bạn"
+                  onChange={getWard}
+                  allowClear
+                >
+                  {district?.map((item, idx) => (
+                    <Option value={item.district_id} key={idx}>
+                      {item.district_name}
+                    </Option>
+                  ))}
+                </Select>
+              </FormItem>
+              <FormItem
+                label="Phường/Xã:"
+                name="wardnon"
+                required
+                rules={[{ required: true }]}
+              >
+                <Select placeholder="Chọn Phường/Xã của bạn">
+                  {ward.length !== 0 &&
+                    ward?.map((item, idx) => (
+                      <Option key={idx} value={item.ward_id}>
+                        {item.ward_name}
+                      </Option>
+                    ))}
+                </Select>
+              </FormItem>
+              <button className="btn btn-primary form-btn" type="submit">
+                Thêm
+              </button>
+            </Form>
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            bodyStyle={{ paddingTop: 0 }}
+            className="header-solid h-full  ant-list-yes"
+            title={<h6 className="font-semibold m-0">Thông tin nhân viên</h6>}
+          >
+            {sta?.map((item, idx) => (
+              <div>
+                <p>
+                  <b>Họ tên: </b> {item.fullName}
+                </p>
+                <p>
+                  <b>SĐT: </b> {item.phone}
+                </p>
+                <p>
+                  <b>Căn cước công dân: </b> {item.cccd}
+                </p>
+                <p>
+                  <b>Email: </b> {item.email}
+                </p>
+                <p>
+                  <b>Địa chỉ: </b> {item.address}
+                </p>
+                <p>
+                  <b>Chuyên môn: </b> {item.specialization}
+                </p>
+                <p>
+                  <b>Trình độ: </b> {item.level}
+                </p>
+                <p>
+                  <b>Kinh nghiệm: </b> {item.experience}
+                </p>
               </div>
-              <div className="card-body">
-                <Row>
-                  <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                    <p>
-                      <b>Họ tên: </b> {item.fullName}
-                    </p>
-                    <p>
-                      <b>SĐT: </b> {item.phone}
-                    </p>
-                    <p>
-                      <b>Căn cước công dân: </b> {item.cccd}
-                    </p>
-                    <p>
-                      <b>Email: </b> {item.email}
-                    </p>
-                    <p>
-                      <b>Địa chỉ: </b> {item.address}
-                    </p>
-                    <p>
-                      <b>Chuyên môn: </b> {item.specialization}
-                    </p>
-                    <p>
-                      <b>Trình độ: </b> {item.level}
-                    </p>
-                    <p>
-                      <b>Kinh nghiệm: </b> {item.experience}
-                    </p>
-                  </Col>
-                  <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                    <Form
-                      layout="vertical"
-                      className="m-3"
-                      onFinish={handleFinish}
-                    >
-                      <FormItem
-                        label="Ngày bắt đầu"
-                        name="begin"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Input type="date" placeholder="Chọn ngày bắt đầu" />
-                      </FormItem>
-                      <FormItem
-                        label="Ngày kết thúc"
-                        name="end"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Input type="date" placeholder="Chọn ngày kết thúc" />
-                      </FormItem>
-                      <FormItem
-                        label="Quận/Huyện:"
-                        name="districtnon"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Select
-                          placeholder="Chọn Quận/Huyện của bạn"
-                          onChange={getWard}
-                          allowClear
-                        >
-                          {district?.map((item, idx) => (
-                            <Option value={item.district_id} key={idx}>
-                              {item.district_name}
-                            </Option>
-                          ))}
-                        </Select>
-                      </FormItem>
-                      <FormItem
-                        label="Phường/Xã:"
-                        name="wardnon"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Select placeholder="Chọn Phường/Xã của bạn">
-                          {ward.length !== 0 &&
-                            ward?.map((item, idx) => (
-                              <Option key={idx} value={item.ward_id}>
-                                {item.ward_name}
-                              </Option>
-                            ))}
-                        </Select>
-                      </FormItem>
-                      <button
-                        className="btn btn-primary form-btn"
-                        type="submit"
-                      >
-                        Thêm
-                      </button>
-                    </Form>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </>
-        ))}
-      </>
-    </Layout>
+            ))}
+          </Card>
+        </Col>
+      </Row>
+    </Main>
   );
 };
 

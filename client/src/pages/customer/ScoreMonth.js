@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
+import Main from "../../components/layout/Main";
+
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Col, Form, Input, Row, message, Select, Table } from "antd";
+import {
+  Col,
+  Form,
+  Input,
+  Row,
+  message,
+  Select,
+  Table,
+  Card,
+  Button,
+} from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
@@ -72,22 +84,56 @@ const ScoreMonth = () => {
       dataIndex: "score",
     },
     {
-      title: "Hành động",
+      title: "Hóa đơn",
+      dataIndex: "status",
+      render: (text, record) => (
+        <div>{record.status === "0" ? <b>Chưa tạo</b> : <b>Đã tạo</b>}</div>
+      ),
+    },
+    {
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
         <div>
-          <Link>
-            <button className="btn btn-secondary">Xem hóa đơn</button>
-          </Link>
+          {record.status === "0" ? (
+            <div>
+              <p>Hóa đơn chưa được tạo</p>
+            </div>
+          ) : (
+            <div>
+              <Link to={`/customer/bill/${record._id}/${record.staffId}`}>
+                <Button className="tag-primary" type="primary">
+                  Xem hóa đơn
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       ),
     },
   ];
   return (
-    <Layout>
-      <h1 className="text-center m-3">Chỉ số điện hàng tháng</h1>
-      <Table className="m-5" columns={columns} dataSource={electric} />
-    </Layout>
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Chỉ số điện hàng tháng"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={electric}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </Main>
   );
 };
 

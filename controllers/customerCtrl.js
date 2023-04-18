@@ -2,7 +2,6 @@ const userModel = require("../models/userModels");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const customerModel = require("../models/customerModel");
-const appointmentModel = require("../models/appointmentModel");
 const moment = require("moment");
 const electricModel = require("../models/electricModel");
 

@@ -29,11 +29,6 @@ const Layout = ({ children }) => {
       icon: "fa-solid fa-house",
     },
     {
-      name: "Lịch hẹn",
-      path: "/appointments",
-      icon: "fa-solid fa-list",
-    },
-    {
       name: "Đăng ký lắp đặt điện",
       path: "/apply-customer",
       icon: "fa-solid fa-user-doctor",
@@ -53,6 +48,11 @@ const Layout = ({ children }) => {
       path: "/update-password",
       icon: "fa-solid fa-key",
     },
+    {
+      name: "Thông báo",
+      path: "/notification",
+      icon: "fa-solid fa-bell",
+    },
   ];
 
   // ======== Staff Menu
@@ -61,11 +61,6 @@ const Layout = ({ children }) => {
       name: "Trang chủ",
       path: "/",
       icon: "fa-solid fa-house",
-    },
-    {
-      name: "Lịch hẹn",
-      path: "/staff-appointments",
-      icon: "fa-solid fa-list",
     },
     {
       name: "Lịch làm việc",
@@ -91,6 +86,11 @@ const Layout = ({ children }) => {
       name: "Đổi mật khẩu",
       path: "/update-password",
       icon: "fa-solid fa-key",
+    },
+    {
+      name: "Thông báo",
+      path: "/notification",
+      icon: "fa-solid fa-bell",
     },
   ];
   // ======== Staff Menu

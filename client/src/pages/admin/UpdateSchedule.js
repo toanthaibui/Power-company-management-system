@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Col, Form, Input, Row, Select, message } from "antd";
+import { Card, Col, Form, Input, Row, Select, message } from "antd";
+import Main from "../../components/layout/Main";
+
 import FormItem from "antd/es/form/FormItem";
 import { Option } from "antd/es/mentions";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +67,7 @@ const UpdateSchedule = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
-        navigate("/admin/schedule");
+        navigate("/admin/schedule-staff");
       } else {
         message.error(res.data.message);
       }
@@ -97,90 +99,76 @@ const UpdateSchedule = () => {
   }, []);
 
   return (
-    <Layout>
-      <>
-        <>
-          <br />
-          <div className="card m-5" style={{ cursor: "pointer" }}>
-            <div className="card-header text-center">
-              <b>Cập nhật lịch làm việc nhân viên</b>
-            </div>
-            <div className="card-body text-center">
-              <Row>
-                <Col xs={20} sm={16} md={12} lg={8} xl={4}></Col>
-                <Col xs={20} sm={16} md={12} lg={8} xl={4}></Col>
-
-                <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                  {sche && (
-                    <Form
-                      layout="vertical"
-                      className="m-3"
-                      onFinish={handleFinish}
+    <Main>
+      <Card
+        bordered={false}
+        className="criclebox  mb-24"
+        title="Cập nhật lịch làm việc"
+      >
+        <Row>
+          <Col span={12} offset={6}>
+            <div className="text-center">
+              {sche && (
+                <Form layout="vertical" className="m-3" onFinish={handleFinish}>
+                  <FormItem
+                    label="Ngày bắt đầu"
+                    name="begin"
+                    required
+                    rules={[{ required: true }]}
+                  >
+                    <Input type="date" placeholder="Chọn ngày bắt đầu" />
+                  </FormItem>
+                  <FormItem
+                    label="Ngày kết thúc"
+                    name="end"
+                    required
+                    rules={[{ required: true }]}
+                  >
+                    <Input type="date" placeholder="Chọn ngày kết thúc" />
+                  </FormItem>
+                  <FormItem
+                    label="Quận/Huyện:"
+                    name="districtnon"
+                    required
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      placeholder="Chọn Quận/Huyện của bạn"
+                      onChange={getWard}
+                      allowClear
                     >
-                      <FormItem
-                        label="Ngày bắt đầu"
-                        name="begin"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Input type="date" placeholder="Chọn ngày bắt đầu" />
-                      </FormItem>
-                      <FormItem
-                        label="Ngày kết thúc"
-                        name="end"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Input type="date" placeholder="Chọn ngày kết thúc" />
-                      </FormItem>
-                      <FormItem
-                        label="Quận/Huyện:"
-                        name="districtnon"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Select
-                          placeholder="Chọn Quận/Huyện của bạn"
-                          onChange={getWard}
-                          allowClear
-                        >
-                          {district?.map((item, idx) => (
-                            <Option value={item.district_id} key={idx}>
-                              {item.district_name}
-                            </Option>
-                          ))}
-                        </Select>
-                      </FormItem>
-                      <FormItem
-                        label="Phường/Xã:"
-                        name="wardnon"
-                        required
-                        rules={[{ required: true }]}
-                      >
-                        <Select placeholder="Chọn Phường/Xã của bạn">
-                          {ward.length !== 0 &&
-                            ward?.map((item, idx) => (
-                              <Option key={idx} value={item.ward_id}>
-                                {item.ward_name}
-                              </Option>
-                            ))}
-                        </Select>
-                      </FormItem>
-                      <button
-                        className="btn btn-primary form-btn"
-                        type="submit"
-                      >
-                        Cập nhật
-                      </button>
-                    </Form>
-                  )}
-                </Col>
-              </Row>
+                      {district?.map((item, idx) => (
+                        <Option value={item.district_id} key={idx}>
+                          {item.district_name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </FormItem>
+                  <FormItem
+                    label="Phường/Xã:"
+                    name="wardnon"
+                    required
+                    rules={[{ required: true }]}
+                  >
+                    <Select placeholder="Chọn Phường/Xã của bạn">
+                      {ward.length !== 0 &&
+                        ward?.map((item, idx) => (
+                          <Option key={idx} value={item.ward_id}>
+                            {item.ward_name}
+                          </Option>
+                        ))}
+                    </Select>
+                  </FormItem>
+                  <button className="btn btn-primary form-btn" type="submit">
+                    Cập nhật
+                  </button>
+                </Form>
+              )}
             </div>
-          </div>
-        </>
-      </>
-    </Layout>
+          </Col>
+        </Row>
+      </Card>
+    </Main>
   );
 };
 

@@ -3,11 +3,11 @@ const {
   getStaffInfoController,
   updateProfileController,
   getStaffByIdController,
-  staffAppointmentsController,
-  updateStatusController,
   setElectricNoteController,
   getElectricCustomerController,
   setBillController,
+  getElectricInfoController,
+  getBillByElectricController,
 } = require("../controllers/staffCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -21,12 +21,6 @@ router.post("/updateProfile", authMiddleware, updateProfileController);
 //POST GET SINGLE DOC INFO
 router.post("/getStaffById", authMiddleware, getStaffByIdController);
 
-//Get appointments
-router.get("/staff-appointments", authMiddleware, staffAppointmentsController);
-
-//Post update status
-router.post("/update-status", authMiddleware, updateStatusController);
-
 router.post("/setElectricNote", authMiddleware, setElectricNoteController);
 
 router.post(
@@ -35,6 +29,10 @@ router.post(
   getElectricCustomerController
 );
 
+router.post("/getElectricInfo", authMiddleware, getElectricInfoController);
+
 router.post("/setBill", authMiddleware, setBillController);
+
+router.post("/getBillByElectric", authMiddleware, getBillByElectricController);
 
 module.exports = router;

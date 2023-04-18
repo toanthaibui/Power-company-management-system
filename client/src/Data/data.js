@@ -31,13 +31,23 @@ export const adminMenu = [
     icon: "fa-solid fa-money-bill-transfer",
   },
   {
-    name: "Xếp lịch làm việc",
-    path: "/admin/schedule",
+    name: "Quản lí hóa đơn",
+    path: "/admin/bill-admin",
+    icon: "fa-solid fa-money-bill",
+  },
+  {
+    name: "Lịch làm việc",
+    path: "/admin/schedule-staff",
     icon: "fa-solid fa-calendar-days",
   },
   {
     name: "Đổi mật khẩu",
     path: "/update-password",
     icon: "fa-solid fa-key",
+  },
+  {
+    name: "Thông báo",
+    path: "/notification",
+    icon: "fa-solid fa-bell",
   },
 ];

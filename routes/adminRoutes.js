@@ -16,6 +16,10 @@ const {
   deteleScheduleController,
   getSchedulesStaffController,
   getCustomerElectricNoteController,
+  getScheduleAdminController,
+  getAllBillsController,
+  getBillByDetailController,
+  deteleBillController,
 } = require("../controllers/adminCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -63,10 +67,17 @@ router.get("/getAllSchedules", authMiddleware, getAllSchedulesController);
 router.post("/updateSchedule", authMiddleware, updateScheduleController);
 router.post("/deteleSchedule", authMiddleware, deteleScheduleController);
 router.post("/getSchedulesStaff", authMiddleware, getSchedulesStaffController);
+router.post("/getScheduleAdmin", authMiddleware, getScheduleAdminController);
 router.post(
   "/getCustomerElectricNote",
   authMiddleware,
   getCustomerElectricNoteController
 );
+
+router.get("/getAllBills", authMiddleware, getAllBillsController);
+
+router.post("/getBillByDetail", authMiddleware, getBillByDetailController);
+
+router.post("/deleteBill", authMiddleware, deteleBillController);
 
 module.exports = router;

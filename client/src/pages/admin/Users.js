@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout";
+import Main from "../../components/layout/Main";
+
 import axios from "axios";
-import { message, Table } from "antd";
+import { Button, Card, Col, message, Row, Table, Typography } from "antd";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-
+  const { Title } = Typography;
   //getUsers
   const getUsers = async () => {
     try {
@@ -60,30 +62,47 @@ const Users = () => {
       title: "Phân loại",
       dataIndex: "isStaff",
       render: (text, record) => (
-        <span>{record.isStaff ? "Nhân viên" : "Khách hàng"}</span>
+        <Title level={5}>{record.isStaff ? "Nhân viên" : "Khách hàng"}</Title>
       ),
     },
     {
-      title: "Hành động",
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
-        <div className="d-flex">
-          <button
-            className="btn btn-danger"
+        <div>
+          <Button
+            className="tag-badge"
             onClick={() => handleAccountStatus(record)}
           >
             Xóa
-          </button>
+          </Button>
         </div>
       ),
     },
   ];
 
   return (
-    <Layout>
-      <h1 className="text-center m-2">Users list</h1>
-      <Table columns={columns} dataSource={users}></Table>
-    </Layout>
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Danh sách nhân viên"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns}
+                  dataSource={users}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </Main>
   );
 };
 

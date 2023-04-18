@@ -1,8 +1,9 @@
 import React from "react";
 import Layout from "../components/Layout";
+import Main from "../components/layout/Main";
 
 import "../styles/RegisterStyles.css";
-import { Form, Input, message } from "antd";
+import { Card, Col, Form, Input, Row, message } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
@@ -27,9 +28,12 @@ const RegisterStaff = () => {
     }
   };
   return (
-    <Layout>
-      <h1 className="text-center">Tài Khoản Nhân Viên</h1>
-      <>
+    <Main>
+      <Card
+        bordered={false}
+        className="criclebox mb-24"
+        title="Tạo tài khoản nhân viên"
+      >
         <div className="form-container-staff">
           <Form
             layout="vertical"
@@ -54,8 +58,10 @@ const RegisterStaff = () => {
             </button>
           </Form>
         </div>
-      </>
-    </Layout>
+        <br />
+        <br />
+      </Card>
+    </Main>
   );
 };
 

@@ -3,6 +3,8 @@ const userModel = require("../models/userModels");
 const customerModel = require("../models/customerModel");
 const priceModel = require("../models/priceModel");
 const scheduleModel = require("../models/scheduleModel");
+const billModel = require("../models/billModel");
+const electricModel = require("../models/electricModel");
 
 const getAllUsersController = async (req, res) => {
   try {
@@ -78,6 +80,24 @@ const getSchedulesStaffController = async (req, res) => {
   try {
     const staff = await staffModel.findOne({ userId: req.body.userId });
     const schedules = await scheduleModel.find({ staffId: staff._id });
+    res.status(200).send({
+      success: true,
+      message: "Staffs data list",
+      data: schedules,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "erorr while fetching users",
+      error,
+    });
+  }
+};
+
+const getScheduleAdminController = async (req, res) => {
+  try {
+    const schedules = await scheduleModel.find({ staffId: req.body.staffId });
     res.status(200).send({
       success: true,
       message: "Staffs data list",
@@ -337,6 +357,72 @@ const updateScheduleController = async (req, res) => {
   }
 };
 
+const getAllBillsController = async (req, res) => {
+  try {
+    const bills = await billModel.find({});
+    res.status(200).send({
+      success: true,
+      message: "users data list",
+      data: bills,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "erorr while fetching users",
+      error,
+    });
+  }
+};
+
+const getBillByDetailController = async (req, res) => {
+  try {
+    const bill = await billModel.findOne({
+      _id: req.body.billId,
+    });
+    const electric = await electricModel.findOne({ _id: bill.electricId });
+    const staff = await staffModel.findOne({ _id: electric.staffId });
+    const customer = await customerModel.findOne({ _id: electric.customerId });
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      bill: bill,
+      electric: electric,
+      customer: customer,
+      staff: staff,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const deteleBillController = async (req, res) => {
+  try {
+    const bill = await billModel.findOne({ _id: req.body.billId });
+    const electricstatus = await electricModel.findByIdAndUpdate(
+      bill.electricId,
+      { status: "0" }
+    );
+    await billModel.deleteOne({ _id: req.body.billId });
+    res.status(201).send({
+      success: true,
+      message: "Đã xóa hóa đơn thành công",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Acount Status",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getAllUsersController,
   getAllStaffsController,
@@ -354,4 +440,8 @@ module.exports = {
   deteleScheduleController,
   getSchedulesStaffController,
   getCustomerElectricNoteController,
+  getScheduleAdminController,
+  getAllBillsController,
+  getBillByDetailController,
+  deteleBillController,
 };

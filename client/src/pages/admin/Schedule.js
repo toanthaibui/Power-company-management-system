@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
+import Main from "../../components/layout/Main";
+
 import Layout from "./../../components/Layout";
 import axios from "axios";
-import { Table, message } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Card, Col, Row, Table, Typography, message } from "antd";
+import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 
 const Schedule = () => {
   const [schedules, setSchedules] = useState([]);
 
-  const getSchedules = async () => {
+  const params = useParams();
+
+  const getScheduleStaff = async () => {
     try {
-      const res = await axios.get("/api/v1/admin/getAllSchedules", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await axios.post(
+        "/api/v1/admin/getScheduleAdmin",
+        { staffId: params.staffId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (res.data.success) {
         setSchedules(res.data.data);
       }
@@ -42,18 +50,21 @@ const Schedule = () => {
       message.error("Something Went Wrong");
     }
   };
+  const { Title } = Typography;
 
   useEffect(() => {
-    getSchedules();
+    getScheduleStaff();
   }, []);
   const columns_schedule = [
     {
-      title: "Họ Tên",
+      title: "Nhân viên",
       dataIndex: "fullName",
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phone",
+      render: (text, record) => (
+        <div className="avatar-info">
+          <Title level={5}>{record.fullName}</Title>
+          <p>{record.phone}</p>
+        </div>
+      ),
     },
     {
       title: "Ngày bắt đầu",
@@ -78,33 +89,46 @@ const Schedule = () => {
       dataIndex: "ward",
     },
     {
-      title: "Hành động",
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="text-center">
           <Link to={`/admin/schedule/updateschedule/${record._id}`}>
-            <button className="btn btn-success">Cập nhật</button>
+            <Button className="tag-primary" type="primary">
+              Cập nhật
+            </Button>
           </Link>
-          <p></p>
-          <button
-            className="btn btn-danger"
-            onClick={() => handleDelete(record)}
-          >
+          &nbsp; &nbsp;
+          <Button className="tag-badge" onClick={() => handleDelete(record)}>
             Xóa
-          </button>
+          </Button>
         </div>
       ),
     },
   ];
 
   return (
-    <Layout>
-      <br />
-      <h1 className="text-center m-3">Lịch làm việc</h1>
-      <div className="m-4">
-        <Table columns={columns_schedule} dataSource={schedules} />
+    <Main>
+      <div className="tabled">
+        <Row gutter={[24, 0]}>
+          <Col xs="24" xl={24}>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Lịch làm việc cá nhân"
+            >
+              <div className="table-responsive">
+                <Table
+                  className="ant-border-space"
+                  columns={columns_schedule}
+                  dataSource={schedules}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
       </div>
-    </Layout>
+    </Main>
   );
 };
 
