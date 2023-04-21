@@ -8,7 +8,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 
 const BillDetail = () => {
-  const [electric, setElectric] = useState();
   const [customer, setCustomer] = useState();
   const [bill, setBill] = useState();
   const [staff, setStaff] = useState();
@@ -29,7 +28,6 @@ const BillDetail = () => {
         setBill(res.data.bill);
         setStaff(res.data.staff);
         setCustomer(res.data.customer);
-        setElectric(res.data.electric);
       }
     } catch (error) {
       console.log(error);
@@ -44,6 +42,8 @@ const BillDetail = () => {
     style: "currency",
     currency: "VND",
   });
+
+  const st = bill?.status === "0" ? "Chưa thanh toán" : "Đã thanh toán";
   return (
     <Main>
       <Row gutter={[24, 0]} className="m-5">
@@ -92,16 +92,19 @@ const BillDetail = () => {
               </p>
               <p>
                 <b>Ngày ghi điện: </b>
-                {moment(electric?.date).format("DD-MM-YYYY")}
+                {moment(bill?.date).format("DD-MM-YYYY")}
               </p>
               <p>
-                <b>Chỉ số điện: </b> {electric?.score} kWh
+                <b>Chỉ số điện: </b> {bill?.score} kWh
               </p>
               <p>
-                <b>Giá dịch vụ: </b> {VND.format(bill?.price / electric?.score)}
+                <b>Giá dịch vụ: </b> {VND.format(bill?.price / bill?.score)}
               </p>
               <p>
                 <b>Tổng thanh toán: </b> {VND.format(bill?.price)}
+              </p>
+              <p>
+                <b>Trạng thái: </b> {st}
               </p>
             </div>
           </Card>

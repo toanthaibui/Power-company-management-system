@@ -88,7 +88,7 @@ const ElectricNote = () => {
           &nbsp; &nbsp;
           <Link to={`/staff/all-electric-note/${record._id}`}>
             <Button className="tag-primary" type="primary">
-              Chỉ số điện hàng tháng
+              Xem hóa đơn hàng tháng
             </Button>
           </Link>
         </div>

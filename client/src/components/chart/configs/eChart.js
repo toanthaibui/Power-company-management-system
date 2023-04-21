@@ -1,8 +1,8 @@
 const eChart = {
   series: [
     {
-      name: "Sales",
-      data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+      name: "Doanh thu",
+      data: [450, 200, 100, 220, 500, 100, 400, 230, 500, 200, 350, 600],
       color: "#fff",
     },
   ],
@@ -39,15 +39,18 @@ const eChart = {
     },
     xaxis: {
       categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        "Th 1",
+        "Th 2",
+        "Th 3",
+        "Th 4",
+        "Th 5",
+        "Th 6",
+        "Th 7",
+        "Th 8",
+        "Th 9",
+        "Th 10",
+        "Th 11",
+        "Th 12",
       ],
       labels: {
         show: true,
@@ -56,6 +59,8 @@ const eChart = {
         maxWidth: 160,
         style: {
           colors: [
+            "#fff",
+            "#fff",
             "#fff",
             "#fff",
             "#fff",

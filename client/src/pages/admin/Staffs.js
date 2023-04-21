@@ -118,6 +118,13 @@ const Staffs = () => {
               bordered={false}
               className="criclebox tablespace mb-24"
               title="Danh sách nhân viên"
+              extra={
+                <Link to="/admin/staffs/search-staff">
+                  <Button className="btn btn-primary">
+                    Tìm kiếm nhân viên
+                  </Button>
+                </Link>
+              }
             >
               <div className="table-responsive">
                 <Table

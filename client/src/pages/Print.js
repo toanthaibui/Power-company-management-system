@@ -117,6 +117,9 @@ const Print = () => {
               <br />
               <br />
               <br />
+              <br />
+              <br />
+              <br />
               <b>Điều 2: Nghĩa vụ mỗi bên</b>
               <p></p>
               <b>Quyền và nghĩa vụ bên A</b>
@@ -178,6 +181,10 @@ const Print = () => {
                 1. Trong quá trình thi công, bên A sẽ tạm ứng bên B tương ứng
                 với khối lượng thực hiện nghiệm thu hàng tháng
               </p>
+              <br />
+              <br />
+              <br />
+              <br />
               <br />
               <br />
               <br />

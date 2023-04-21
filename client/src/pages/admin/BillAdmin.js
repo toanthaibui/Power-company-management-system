@@ -57,11 +57,33 @@ const BillAdmin = () => {
       ),
     },
     {
+      title: "Tháng",
+      dataIndex: "date",
+      render: (text, record) => <p>{moment(record.date).format("MM-YYYY")}</p>,
+    },
+    {
+      title: "Chỉ số điện",
+      dataIndex: "score",
+    },
+    {
       title: "Giá",
       dataIndex: "price",
     },
     {
-      title: "Hành động",
+      title: "Trạng thái",
+      dataIndex: "status",
+      render: (text, record) => (
+        <div>
+          {record.status === "0" ? (
+            <h>Chưa thanh toán</h>
+          ) : (
+            <h>Đã thanh toán</h>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: "",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="">
@@ -87,6 +109,11 @@ const BillAdmin = () => {
               bordered={false}
               className="criclebox tablespace mb-24"
               title="Quản lý hóa đơn"
+              extra={
+                <Link to="/admin/search-bill">
+                  <Button className="btn btn-primary">Tìm kiếm Hóa đơn</Button>
+                </Link>
+              }
             >
               <div className="table-responsive">
                 <Table

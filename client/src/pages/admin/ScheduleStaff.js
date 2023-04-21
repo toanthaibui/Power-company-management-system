@@ -86,7 +86,7 @@ const ScheduleStaff = () => {
         <div>
           <Link to={`/admin/schedule/${record._id}`}>
             <Button className="tag-primary" type="primary">
-              Lịch làm việc
+              Xem Lịch làm việc
             </Button>
           </Link>
           &nbsp; &nbsp;

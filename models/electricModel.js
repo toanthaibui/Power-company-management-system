@@ -22,6 +22,10 @@ const electricSchema = new mongoose.Schema(
       type: String,
       default: "0",
     },
+    price: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

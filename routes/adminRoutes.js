@@ -20,6 +20,11 @@ const {
   getAllBillsController,
   getBillByDetailController,
   deteleBillController,
+  SearchStaffController,
+  SearchUserController,
+  SearchCustomerController,
+  totalController,
+  billStatusController,
 } = require("../controllers/adminCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -74,10 +79,20 @@ router.post(
   getCustomerElectricNoteController
 );
 
-router.get("/getAllBills", authMiddleware, getAllBillsController);
+router.get("/getAllBills", authMiddleware, getAllBillsController); //
 
-router.post("/getBillByDetail", authMiddleware, getBillByDetailController);
+router.post("/getBillByDetail", authMiddleware, getBillByDetailController); //
 
-router.post("/deleteBill", authMiddleware, deteleBillController);
+router.post("/deleteBill", authMiddleware, deteleBillController); //
+
+router.post("/billStatus", authMiddleware, billStatusController); //
+
+router.post("/search-staff", authMiddleware, SearchStaffController);
+
+router.post("/search-user", authMiddleware, SearchUserController);
+
+router.post("/search-customer", authMiddleware, SearchCustomerController);
+
+router.get("/total", authMiddleware, totalController);
 
 module.exports = router;

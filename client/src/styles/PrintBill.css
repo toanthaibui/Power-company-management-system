@@ -47,9 +47,9 @@ img {
     max-width: inherit;
     width: inherit;
 }
-
+/* 
 @media print {
     @page {
       size: 75mm 100mm;
     }
-  }
+  } */

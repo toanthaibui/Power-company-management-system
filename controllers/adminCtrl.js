@@ -3,7 +3,6 @@ const userModel = require("../models/userModels");
 const customerModel = require("../models/customerModel");
 const priceModel = require("../models/priceModel");
 const scheduleModel = require("../models/scheduleModel");
-const billModel = require("../models/billModel");
 const electricModel = require("../models/electricModel");
 
 const getAllUsersController = async (req, res) => {
@@ -359,7 +358,7 @@ const updateScheduleController = async (req, res) => {
 
 const getAllBillsController = async (req, res) => {
   try {
-    const bills = await billModel.find({});
+    const bills = await electricModel.find({});
     res.status(200).send({
       success: true,
       message: "users data list",
@@ -377,17 +376,15 @@ const getAllBillsController = async (req, res) => {
 
 const getBillByDetailController = async (req, res) => {
   try {
-    const bill = await billModel.findOne({
+    const bill = await electricModel.findOne({
       _id: req.body.billId,
     });
-    const electric = await electricModel.findOne({ _id: bill.electricId });
-    const staff = await staffModel.findOne({ _id: electric.staffId });
-    const customer = await customerModel.findOne({ _id: electric.customerId });
+    const staff = await staffModel.findOne({ _id: bill.staffId });
+    const customer = await customerModel.findOne({ _id: bill.customerId });
     res.status(200).send({
       success: true,
       message: "Single staff info fetched",
       bill: bill,
-      electric: electric,
       customer: customer,
       staff: staff,
     });
@@ -403,12 +400,7 @@ const getBillByDetailController = async (req, res) => {
 
 const deteleBillController = async (req, res) => {
   try {
-    const bill = await billModel.findOne({ _id: req.body.billId });
-    const electricstatus = await electricModel.findByIdAndUpdate(
-      bill.electricId,
-      { status: "0" }
-    );
-    await billModel.deleteOne({ _id: req.body.billId });
+    await electricModel.deleteOne({ _id: req.body.billId });
     res.status(201).send({
       success: true,
       message: "Đã xóa hóa đơn thành công",
@@ -418,6 +410,144 @@ const deteleBillController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in Acount Status",
+      error,
+    });
+  }
+};
+
+const billStatusController = async (req, res) => {
+  try {
+    await electricModel.findOneAndUpdate(
+      { _id: req.body.billId },
+      { status: "1" }
+    );
+    res.status(201).send({
+      success: true,
+      message: "Đã xóa hóa đơn thành công",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Acount Status",
+      error,
+    });
+  }
+};
+
+const SearchStaffController = async (req, res) => {
+  try {
+    const staff =
+      req.body.field === "fullName"
+        ? await staffModel.find({ fullName: req.body.keyword })
+        : req.body.field === "phone"
+        ? await staffModel.find({ phone: req.body.keyword })
+        : req.body.field === "email"
+        ? await staffModel.find({ email: req.body.keyword })
+        : req.body.field === "cccd"
+        ? await staffModel.find({ cccd: req.body.keyword })
+        : req.body.field === "address"
+        ? await staffModel.find({ address: req.body.keyword })
+        : req.body.field === "level"
+        ? await staffModel.find({ level: req.body.keyword })
+        : req.body.field === "specialization"
+        ? await staffModel.find({ specialization: req.body.keyword })
+        : await staffModel.find({});
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: staff,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const SearchUserController = async (req, res) => {
+  try {
+    const user =
+      req.body.field === "name"
+        ? await userModel.find({ name: req.body.keyword })
+        : req.body.field === "email"
+        ? await userModel.find({ email: req.body.keyword })
+        : req.body.field === "isStaff"
+        ? await userModel.find({ isStaff: req.body.keyword })
+        : await userModel.find({});
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const SearchCustomerController = async (req, res) => {
+  try {
+    const customer =
+      req.body.field === "fullName"
+        ? await customerModel.find({ fullName: req.body.keyword })
+        : req.body.field === "email"
+        ? await customerModel.find({ email: req.body.keyword })
+        : req.body.field === "phone"
+        ? await customerModel.find({ phone: req.body.keyword })
+        : req.body.field === "cccd"
+        ? await customerModel.find({ cccd: req.body.keyword })
+        : req.body.field === "ward"
+        ? await customerModel.find({ ward: req.body.keyword })
+        : req.body.field === "district"
+        ? await customerModel.find({ district: req.body.keyword })
+        : req.body.field === "purpose"
+        ? await customerModel.find({ purpose: req.body.keyword })
+        : req.body.field === "status"
+        ? await customerModel.find({ status: req.body.keyword })
+        : await customerModel.find({});
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: customer,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
+const totalController = async (req, res) => {
+  try {
+    const customer = await customerModel.find({}).count();
+    const user = await userModel.find({}).count();
+    const staff = await staffModel.find({}).count();
+    const bill = await electricModel.find({}).count();
+
+    res.status(200).send({
+      success: true,
+      message: "users data list",
+      customer: customer,
+      user,
+      staff,
+      bill,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "erorr while fetching users",
       error,
     });
   }
@@ -444,4 +574,9 @@ module.exports = {
   getAllBillsController,
   getBillByDetailController,
   deteleBillController,
+  SearchStaffController,
+  SearchUserController,
+  SearchCustomerController,
+  totalController,
+  billStatusController,
 };

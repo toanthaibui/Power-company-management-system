@@ -24,7 +24,7 @@ const Sidenav = ({ color }) => {
       icon: "fa-solid fa-user-doctor",
     },
     {
-      name: "Chỉ số điện",
+      name: "Hóa đơn",
       path: `/customer/score-month/${user?._id}`,
       icon: "fa-solid fa-calendar-days",
     },
@@ -91,7 +91,7 @@ const Sidenav = ({ color }) => {
       icon: "fa-solid fa-house",
     },
     {
-      name: "Danh sách nhân viên",
+      name: "Quản lý nhân viên",
       path: "/admin/staffs",
       icon: "fa-solid fa-user-doctor",
     },
@@ -101,7 +101,7 @@ const Sidenav = ({ color }) => {
       icon: "fa-solid fa-user",
     },
     {
-      name: "Danh sách khách hàng",
+      name: "Quản lý khách hàng",
       path: "/admin/customers",
       icon: "fa-solid fa-users",
     },
@@ -114,6 +114,11 @@ const Sidenav = ({ color }) => {
       name: "Quản lí hóa đơn",
       path: "/admin/bill-admin",
       icon: "fa-solid fa-money-bill",
+    },
+    {
+      name: "Thống kê",
+      path: "/admin/statistical",
+      icon: "fa-solid fa-calculator",
     },
     {
       name: "Lịch làm việc",

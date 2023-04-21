@@ -5,9 +5,7 @@ const {
   getStaffByIdController,
   setElectricNoteController,
   getElectricCustomerController,
-  setBillController,
   getElectricInfoController,
-  getBillByElectricController,
 } = require("../controllers/staffCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -30,9 +28,5 @@ router.post(
 );
 
 router.post("/getElectricInfo", authMiddleware, getElectricInfoController);
-
-router.post("/setBill", authMiddleware, setBillController);
-
-router.post("/getBillByElectric", authMiddleware, getBillByElectricController);
 
 module.exports = router;

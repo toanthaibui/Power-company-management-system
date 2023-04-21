@@ -27,8 +27,6 @@ import SetElectricNote from "./pages/staff/SetElectricNote";
 import AllElectricNote from "./pages/staff/AllElectricNote";
 import ScoreMonth from "./pages/customer/ScoreMonth";
 import PrintBill from "./pages/staff/PrintBill";
-import Bill from "./pages/staff/Bill";
-import BillCustomer from "./pages/customer/BillCustomer";
 import ScheduleStaff from "./pages/admin/ScheduleStaff";
 import BillAdmin from "./pages/admin/BillAdmin";
 import BillDetail from "./pages/admin/BillDetail";
@@ -36,6 +34,11 @@ import SignIn from "./pages/SignIn";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import "antd/dist/reset.css";
+import SearchStaff from "./pages/admin/SearchStaff";
+import SearchUser from "./pages/admin/SearchUser";
+import SearchCustomer from "./pages/admin/SearchCustomer";
+import SearchBill from "./pages/admin/SearchBill";
+import Statistical from "./pages/admin/Statistical";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -78,10 +81,50 @@ function App() {
               }
             />
             <Route
+              path="/admin/staffs/search-staff"
+              element={
+                <ProtectedRoute>
+                  <SearchStaff />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users/search-user"
+              element={
+                <ProtectedRoute>
+                  <SearchUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/customers/search-customer"
+              element={
+                <ProtectedRoute>
+                  <SearchCustomer />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/admin/customers"
               element={
                 <ProtectedRoute>
                   <Customers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/statistical"
+              element={
+                <ProtectedRoute>
+                  <Statistical />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/search-bill"
+              element={
+                <ProtectedRoute>
+                  <SearchBill />
                 </ProtectedRoute>
               }
             />
@@ -162,22 +205,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <PrintBill />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/staff/bill/:electricId/:customerId"
-              element={
-                <ProtectedRoute>
-                  <Bill />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/customer/bill/:electricId/:staffId"
-              element={
-                <ProtectedRoute>
-                  <BillCustomer />
                 </ProtectedRoute>
               }
             />

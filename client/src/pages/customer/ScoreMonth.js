@@ -75,6 +75,13 @@ const ScoreMonth = () => {
   }, []);
   const columns = [
     {
+      title: "Ngày tạo",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <p>{moment(record.createdAt).format("HH:mm-DD-MM-YYYY")}</p>
+      ),
+    },
+    {
       title: "Tháng",
       dataIndex: "date",
       render: (text, record) => <p>{moment(record.date).format("MM-YYYY")}</p>,
@@ -84,30 +91,32 @@ const ScoreMonth = () => {
       dataIndex: "score",
     },
     {
-      title: "Hóa đơn",
+      title: "Giá",
+      dataIndex: "price",
+    },
+    {
+      title: "Trạng thái",
       dataIndex: "status",
       render: (text, record) => (
-        <div>{record.status === "0" ? <b>Chưa tạo</b> : <b>Đã tạo</b>}</div>
+        <div>
+          {record.status === "0" ? (
+            <h>Chưa thanh toán</h>
+          ) : (
+            <h>Đã thanh toán</h>
+          )}
+        </div>
       ),
     },
     {
       title: "",
       dataIndex: "actions",
       render: (text, record) => (
-        <div>
-          {record.status === "0" ? (
-            <div>
-              <p>Hóa đơn chưa được tạo</p>
-            </div>
-          ) : (
-            <div>
-              <Link to={`/customer/bill/${record._id}/${record.staffId}`}>
-                <Button className="tag-primary" type="primary">
-                  Xem hóa đơn
-                </Button>
-              </Link>
-            </div>
-          )}
+        <div className="">
+          <Link to={`/admin/bill-admin/${record._id}`}>
+            <Button className="tag-primary" type="primary">
+              Chi tiết hóa đơn
+            </Button>
+          </Link>
         </div>
       ),
     },
@@ -120,7 +129,7 @@ const ScoreMonth = () => {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Chỉ số điện hàng tháng"
+              title="Hóa đơn điện hàng tháng"
             >
               <div className="table-responsive">
                 <Table

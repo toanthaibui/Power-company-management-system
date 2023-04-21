@@ -3,27 +3,22 @@ import Layout from "./../../components/Layout";
 import axios from "axios";
 import Main from "../../components/layout/Main";
 
-import { Button, Card, Col, message, Row, Table, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Table,
+  Typography,
+} from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import FormItem from "antd/es/form/FormItem";
 
-const Customers = () => {
-  const [customers, setCustomers] = useState([]);
-  //getUsers
-  const getCustomers = async () => {
-    try {
-      const res = await axios.get("/api/v1/admin/getAllCustomers", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (res.data.success) {
-        setCustomers(res.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+const SearchCustomer = () => {
   //handle account
   const handleAccountStatus = async (record, status) => {
     try {
@@ -47,7 +42,7 @@ const Customers = () => {
   const { Title } = Typography;
 
   useEffect(() => {
-    getCustomers();
+    handleSearch();
   }, []);
 
   const columns = [
@@ -125,28 +120,82 @@ const Customers = () => {
     },
   ];
 
+  const [data, setData] = useState();
+
+  const handleSearch = async (values) => {
+    try {
+      const res = await axios.post(
+        "/api/v1/admin/search-customer",
+        { ...values },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (res.data.success) {
+        setData(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Main>
       <div className="tabled">
         <Row gutter={[24, 0]}>
-          <Col xs="24" xl={24}>
+          <Col span={24} md={8} className="mb-24">
             <Card
               bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Danh sách khách hàng"
-              extra={
-                <Link to="/admin/customers/search-customer">
-                  <Button className="btn btn-primary">
-                    Tìm kiếm khách hàng
-                  </Button>
-                </Link>
-              }
+              bodyStyle={{ paddingTop: 0 }}
+              className="header-solid h-full  ant-list-yes"
+              title={<h6 className="font-semibold m-0">Thông tin tìm kiếm</h6>}
+            >
+              <Form className="text-center" onFinish={handleSearch}>
+                <FormItem name="field">
+                  <Select
+                    placeholder="Tìm kiếm theo"
+                    options={[
+                      { value: "", label: "Tất cả" },
+                      { value: "fullName", label: "Họ tên" },
+                      { value: "phone", label: "SĐT" },
+                      { value: "email", label: "Email" },
+                      { value: "cccd", label: "Căn cước công dân" },
+                      { value: "ward", label: "Phường/Xã" },
+                      { value: "district", label: "Quận/Huyện" },
+                      { value: "purpose", label: "Mục đích sử dụng" },
+                      { value: "status", label: "Trạng thái (1 - 0)" },
+                    ]}
+                  />
+                </FormItem>
+                <FormItem name="keyword">
+                  <Input
+                    className="text-center"
+                    placeholder="Nhập vào từ khóa"
+                  />
+                </FormItem>
+                <button className="btn btn-primary" type="submit">
+                  Tìm kiếm
+                </button>
+              </Form>
+            </Card>
+          </Col>
+          <Col span={24} md={16} className="mb-24">
+            <Card
+              className="header-solid h-full"
+              bordered={false}
+              title={[
+                <h6 className="font-semibold m-0">Danh sách tìm kiếm</h6>,
+              ]}
+              bodyStyle={{ paddingTop: "0" }}
+              extra={<h6 className="font-semibold m-0">Nhân viên</h6>}
             >
               <div className="table-responsive">
                 <Table
                   className="ant-border-space"
                   columns={columns}
-                  dataSource={customers}
+                  dataSource={data}
                 />
               </div>
             </Card>
@@ -157,4 +206,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default SearchCustomer;

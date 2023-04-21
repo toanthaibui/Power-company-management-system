@@ -9,7 +9,6 @@ const PrintBill = () => {
   const componentRef = useRef();
   const [electric, setElectric] = useState();
   const [customer, setCustomer] = useState();
-  const [bill, setBill] = useState();
 
   const params = useParams();
 
@@ -26,25 +25,6 @@ const PrintBill = () => {
       );
       if (res.data.success) {
         setElectric(res.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getBillByElectric = async () => {
-    try {
-      const res = await axios.post(
-        "/api/v1/staff/getBillByElectric",
-        { electricId: params.electricId },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (res.data.success) {
-        setBill(res.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -84,7 +64,6 @@ const PrintBill = () => {
   useEffect(() => {
     getElectricInfo();
     getCustomerInfo();
-    getBillByElectric();
   }, []);
   return (
     <>
@@ -97,7 +76,7 @@ const PrintBill = () => {
       </button>
       <div className="ticket timenew" ref={componentRef}>
         <h8>
-          Ngày tạo hóa đơn: {moment(bill?.updatedAt).format("DD-MM-YYYY")}
+          Ngày tạo hóa đơn: {moment(electric?.updatedAt).format("DD-MM-YYYY")}
         </h8>
         <br />
         <br />
@@ -130,13 +109,13 @@ const PrintBill = () => {
               <td className="quantity tablebill">{electric?.score}</td>
               <td className="description tablebill">{customer?.purpose}</td>
               <td className="price tablebill">
-                {VND.format(bill?.price / electric?.score)}
+                {VND.format(electric?.price / electric?.score)}
               </td>
             </tr>
             <tr>
               <td className="quantity tablebill"></td>
               <td className="description tablebill">Tổng </td>
-              <td className="price tablebill">{VND.format(bill?.price)}</td>
+              <td className="price tablebill">{VND.format(electric?.price)}</td>
             </tr>
           </tbody>
         </table>

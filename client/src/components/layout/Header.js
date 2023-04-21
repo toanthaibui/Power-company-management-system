@@ -85,11 +85,6 @@ const Header = ({
               </a>
             </Dropdown>
           </Badge>
-          <Input
-            className="header-search"
-            placeholder="Nhập vào từ khóa..."
-            prefix={<SearchOutlined />}
-          />
         </Col>
       </Row>
     </>

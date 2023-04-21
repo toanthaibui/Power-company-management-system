@@ -78,6 +78,26 @@ const AllElectricNote = () => {
     getCustomerInfo();
   }, []);
 
+  const handleStatus = async (record) => {
+    try {
+      const res = await axios.post(
+        "/api/v1/admin/billStatus",
+        { billId: record._id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (res.data.success) {
+        message.success(res.data.message);
+        window.location.reload();
+      }
+    } catch (error) {
+      message.error("Something Went Wrong");
+    }
+  };
+
   const columns = [
     {
       title: "Tháng",
@@ -89,33 +109,44 @@ const AllElectricNote = () => {
       dataIndex: "score",
     },
     {
-      title: "Hóa đơn",
-      dataIndex: "status",
-      render: (text, record) => (
-        <div>{record.status === "0" ? <h>Chưa tạo</h> : <h>Đã tạo</h>}</div>
-      ),
+      title: "Giá",
+      dataIndex: "price",
     },
     {
-      title: "Hành động",
-      dataIndex: "actions",
+      title: "Trạng thái",
+      dataIndex: "status",
       render: (text, record) => (
         <div>
           {record.status === "0" ? (
-            <Button
-              className="btn btn-primary"
-              onClick={() => handleSetBill(record)}
-            >
-              Tạo hóa đơn
+            <h>Chưa thanh toán</h>
+          ) : (
+            <h>Đã thanh toán</h>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      render: (text, record) => (
+        <div>
+          <Link to={`/staff/print-bill/${record._id}/${record.customerId}`}>
+            <Button className="">In hóa đơn</Button>
+          </Link>
+          &nbsp; &nbsp;
+          <Link to={`/admin/bill-admin/${record._id}`}>
+            <Button className="tag-primary" type="primary">
+              Chi tiết hóa đơn
+            </Button>
+          </Link>
+          &nbsp; &nbsp;
+          {record.status === "0" ? (
+            <Button className="tag-badge" onClick={() => handleStatus(record)}>
+              Thanh toán
             </Button>
           ) : (
-            <Link to={`/staff/print-bill/${record._id}/${record.customerId}`}>
-              <Button className="">In hóa đơn</Button>
-            </Link>
+            <h></h>
           )}
-          &nbsp; &nbsp;
-          <Link to={`/staff/bill/${record._id}/${record.customerId}`}>
-            <Button className="btn btn-secondary">Xem hóa đơn</Button>
-          </Link>
         </div>
       ),
     },
@@ -128,9 +159,7 @@ const AllElectricNote = () => {
           <Card
             className="header-solid h-full"
             bordered={false}
-            title={[
-              <h6 className="font-semibold m-0">Chỉ số điện hàng tháng</h6>,
-            ]}
+            title={[<h6 className="font-semibold m-0">Hóa đơn hàng tháng</h6>]}
             bodyStyle={{ paddingTop: "0" }}
           >
             <div className="table-responsive">
