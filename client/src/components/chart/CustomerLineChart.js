@@ -16,14 +16,14 @@ import { MinusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const LineChart = ({ total }) => {
+const CustomerLineChart = ({ total }) => {
   const VND = new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
   });
   const { Title, Paragraph } = Typography;
 
-  const pr = total?.price;
+  const pr = total?.price_month;
 
   const lineChart = {
     series: [
@@ -105,22 +105,16 @@ const LineChart = ({ total }) => {
 
   return (
     <>
-      <div className="linechart">
-        <div>
-          <Title level={5}>Thống kê doanh thu</Title>
-        </div>
-      </div>
-
       <ReactApexChart
         className="full-width"
         options={lineChart.options}
         series={lineChart.series}
         type="area"
-        height={350}
+        height={250}
         width={"100%"}
       />
     </>
   );
 };
 
-export default LineChart;
+export default CustomerLineChart;

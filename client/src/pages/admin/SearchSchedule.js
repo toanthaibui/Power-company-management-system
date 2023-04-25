@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./../../components/Layout";
 import axios from "axios";
+import Main from "../../components/layout/Main";
+
 import {
   Button,
   Card,
@@ -11,19 +13,19 @@ import {
   Row,
   Select,
   Table,
+  Typography,
 } from "antd";
-import Main from "../../components/layout/Main";
-
-import { Link, useNavigate } from "react-router-dom";
-import moment from "moment";
+import { Link } from "react-router-dom";
 import FormItem from "antd/es/form/FormItem";
+const { Title } = Typography;
 
-const SearchBill = () => {
-  const handleDelete = async (record) => {
+const SearchSchedule = () => {
+  //handle account
+  const handleAccountStatus = async (record, status) => {
     try {
       const res = await axios.post(
-        "/api/v1/admin/deleteBill",
-        { billId: record._id },
+        "/api/v1/admin/changeAccountStatus",
+        { staffId: record._id, userId: record.userId, status: status },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -45,39 +47,30 @@ const SearchBill = () => {
 
   const columns = [
     {
-      title: "Ngày tạo",
-      dataIndex: "createdAt",
+      title: "Nhân viên",
+      dataIndex: "fullName",
       render: (text, record) => (
-        <p>{moment(record.createdAt).format("HH:mm-DD-MM-YYYY")}</p>
+        <div className="avatar-info">
+          <Title level={5}>{record.fullName}</Title>
+          <p>{record.email}</p>
+        </div>
       ),
     },
     {
-      title: "Tháng",
-      dataIndex: "date",
-      render: (text, record) => <p>{moment(record.date).format("MM-YYYY")}</p>,
+      title: "SĐT",
+      dataIndex: "phone",
     },
     {
-      title: "Chỉ số điện",
-      dataIndex: "score",
+      title: "Địa chỉ",
+      dataIndex: "address",
     },
     {
-      title: "Giá",
-      dataIndex: "price",
-    },
-    {
-      title: "Quận/Huyện",
-      dataIndex: "district",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Chuyên môn",
+      dataIndex: "specialization",
       render: (text, record) => (
-        <div>
-          {record.status === "0" ? (
-            <h>Chưa thanh toán</h>
-          ) : (
-            <h>Đã thanh toán</h>
-          )}
+        <div className="avatar-info">
+          <Title level={5}>{record.specialization}</Title>
+          <p>{record.level}</p>
         </div>
       ),
     },
@@ -85,27 +78,26 @@ const SearchBill = () => {
       title: "",
       dataIndex: "actions",
       render: (text, record) => (
-        <div className="">
-          <Link to={`/admin/bill-admin/${record._id}`}>
+        <div>
+          <Link to={`/admin/schedule/${record._id}`}>
             <Button className="tag-primary" type="primary">
-              Chi tiết hóa đơn
+              Xem Lịch làm việc
             </Button>
           </Link>
           &nbsp; &nbsp;
-          <Button className="tag-badge" onClick={() => handleDelete(record)}>
-            Xóa
-          </Button>
+          <Link to={`/admin/schedule/setschedule/${record._id}`}>
+            <Button className="">Xếp lịch</Button>
+          </Link>
         </div>
       ),
     },
   ];
-
   const [data, setData] = useState();
 
   const handleSearch = async (values) => {
     try {
       const res = await axios.post(
-        "/api/v1/admin/search-bill",
+        "/api/v1/admin/search-staff",
         { ...values },
         {
           headers: {
@@ -138,10 +130,13 @@ const SearchBill = () => {
                     placeholder="Tìm kiếm theo"
                     options={[
                       { value: "", label: "Tất cả" },
-                      { value: "price", label: "Giá" },
-                      { value: "district", label: "Quận/Huyện" },
-                      { value: "score", label: "Chỉ số điện" },
-                      { value: "status", label: "Trạng thái" },
+                      { value: "fullName", label: "Họ tên" },
+                      { value: "phone", label: "SĐT" },
+                      { value: "email", label: "Email" },
+                      { value: "cccd", label: "Căn cước công dân" },
+                      { value: "address", label: "Địa chỉ" },
+                      { value: "level", label: "Trình độ" },
+                      { value: "specialization", label: "Chuyên môn" },
                     ]}
                   />
                 </FormItem>
@@ -165,7 +160,7 @@ const SearchBill = () => {
                 <h6 className="font-semibold m-0">Danh sách tìm kiếm</h6>,
               ]}
               bodyStyle={{ paddingTop: "0" }}
-              extra={<h6 className="font-semibold m-0">Tài khoản</h6>}
+              extra={<h6 className="font-semibold m-0">Nhân viên</h6>}
             >
               <div className="table-responsive">
                 <Table
@@ -182,4 +177,4 @@ const SearchBill = () => {
   );
 };
 
-export default SearchBill;
+export default SearchSchedule;

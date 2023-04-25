@@ -20,8 +20,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
 import { Option } from "antd/es/mentions";
 import moment from "moment";
+import CustomerLineChart from "../../components/chart/CustomerLineChart";
 
 const ScoreMonth = () => {
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
   const { user } = useSelector((state) => state.user);
   const [customer, setCustomer] = useState([]);
   const dispatch = useDispatch();
@@ -29,6 +34,26 @@ const ScoreMonth = () => {
   const params = useParams();
 
   const [electric, setElectric] = useState([]);
+
+  const [total, setTotal] = useState([]);
+  const getTotal = async () => {
+    try {
+      const res = await axios.post(
+        "/api/v1/customer/price_month",
+        { customerId: params.customerId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (res.data.success) {
+        setTotal(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getCustomerInfo = async () => {
     try {
@@ -68,7 +93,10 @@ const ScoreMonth = () => {
     }
   };
 
+  const sum = total?.sum;
+
   useEffect(() => {
+    getTotal();
     getElectricCustomerUser();
     getCustomerInfo();
     // eslint-disable-next-line
@@ -138,6 +166,48 @@ const ScoreMonth = () => {
                   dataSource={electric}
                 />
               </div>
+            </Card>
+          </Col>
+        </Row>
+        <Row gutter={[24, 0]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={4} className="mb-24">
+            <br />
+            <Row>
+              <Card
+                bordered={false}
+                className="criclebox h-full text-center"
+                title="Tổng giá hóa đơn"
+              >
+                <b>
+                  {sum?.map(function (e) {
+                    return VND.format(e.totalAmount);
+                  })}
+                </b>
+              </Card>
+            </Row>
+            <br />
+            <br />
+            <Row>
+              <Card
+                bordered={false}
+                className="criclebox h-full text-center"
+                title="Tổng số hóa đơn"
+              >
+                <b>
+                  {sum?.map(function (e) {
+                    return e.count;
+                  })}
+                </b>
+              </Card>
+            </Row>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={20} className="mb-24">
+            <Card
+              bordered={false}
+              className="criclebox h-full"
+              title="Biểu đồ hóa đơn tiền điện hàng tháng"
+            >
+              <CustomerLineChart total={total} />
             </Card>
           </Col>
         </Row>

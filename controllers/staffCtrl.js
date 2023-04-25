@@ -72,6 +72,7 @@ const setElectricNoteController = async (req, res) => {
       ...req.body,
       status: "0",
       price: total,
+      district: customer.district,
     });
     await newElectric.save();
     res.status(201).send({

@@ -5,6 +5,7 @@ const {
   updateProfileCustomerController,
   getCustomerByIdController,
   getElectricCustomerUserController,
+  priceMonthController,
 } = require("../controllers/customerCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -28,5 +29,7 @@ router.post(
   authMiddleware,
   getElectricCustomerUserController
 );
+
+router.post("/price_month", authMiddleware, priceMonthController);
 
 module.exports = router;

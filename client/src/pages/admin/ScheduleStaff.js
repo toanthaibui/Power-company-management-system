@@ -107,6 +107,13 @@ const ScheduleStaff = () => {
               bordered={false}
               className="criclebox tablespace mb-24"
               title="Lịch làm việc"
+              extra={
+                <Link to="/admin/search-schedule">
+                  <Button className="btn btn-primary">
+                    Tìm kiếm Lịch làm việc
+                  </Button>
+                </Link>
+              }
             >
               <div className="table-responsive">
                 <Table

@@ -25,6 +25,7 @@ const {
   SearchCustomerController,
   totalController,
   billStatusController,
+  SearchBillController,
 } = require("../controllers/adminCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -92,6 +93,8 @@ router.post("/search-staff", authMiddleware, SearchStaffController);
 router.post("/search-user", authMiddleware, SearchUserController);
 
 router.post("/search-customer", authMiddleware, SearchCustomerController);
+
+router.post("/search-bill", authMiddleware, SearchBillController);
 
 router.get("/total", authMiddleware, totalController);
 

@@ -2,9 +2,12 @@ import { Menu, message } from "antd";
 import { NavLink, Navigate, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Sidenav = ({ color }) => {
   const { user } = useSelector((state) => state.user);
+  const [customer, setCustomer] = useState([]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -12,6 +15,31 @@ const Sidenav = ({ color }) => {
     window.location.reload();
     Navigate("/login");
   };
+
+  const getCustomerInfo = async () => {
+    try {
+      const res = await axios.post(
+        "/api/v1/customer/getCustomerInfo",
+        { userId: user._id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (res.data.success) {
+        setCustomer(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCustomerInfo();
+    // eslint-disable-next-line
+  }, []);
+
   const userMenu = [
     {
       name: "Trang chủ",
@@ -25,7 +53,7 @@ const Sidenav = ({ color }) => {
     },
     {
       name: "Hóa đơn",
-      path: `/customer/score-month/${user?._id}`,
+      path: `/customer/score-month/${user?._id}/${customer?._id}`,
       icon: "fa-solid fa-calendar-days",
     },
     {

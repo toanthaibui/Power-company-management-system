@@ -12,29 +12,153 @@
 
 import ReactApexChart from "react-apexcharts";
 import { Row, Col, Typography } from "antd";
-import eChart from "./configs/eChart";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function EChart() {
+const EChart = ({ total }) => {
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
   const { Title, Paragraph } = Typography;
+
+  const pr = total?.price;
+
+  const sum = total?.sum;
+
+  const monthnew = total?.monthnew;
 
   const items = [
     {
-      Title: "3,6K",
+      Title: sum?.map(function (e) {
+        return VND.format(e.totalAmount);
+      }),
       user: "Tổng doanh thu",
     },
     {
-      Title: "2m",
+      Title: sum?.map(function (e) {
+        return e.count;
+      }),
       user: "Số hóa đơn",
     },
     {
-      Title: "$772",
-      user: "Sales",
+      Title: monthnew?.map(function (e) {
+        return VND.format(e.totalAmount);
+      }),
+      user: monthnew?.map(function (e) {
+        return "Tháng " + e._id.month + "/" + e._id.year;
+      }),
     },
     {
-      Title: "82",
-      user: "Items",
+      Title: monthnew?.map(function (e) {
+        return e.count;
+      }),
+      user: "Số hóa đơn",
     },
   ];
+
+  const eChart = {
+    series: [
+      {
+        name: "Doanh thu",
+        data: pr?.map(function (e) {
+          return e.totalAmount;
+        }),
+        color: "#fff",
+      },
+    ],
+
+    options: {
+      chart: {
+        type: "bar",
+        width: "100%",
+        height: "auto",
+
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 5,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 1,
+        colors: ["transparent"],
+      },
+      grid: {
+        show: true,
+        borderColor: "#ccc",
+        strokeDashArray: 2,
+      },
+      xaxis: {
+        categories: pr?.map(function (e) {
+          return e._id.month + "/" + e._id.year;
+        }),
+        labels: {
+          show: true,
+          align: "right",
+          minWidth: 0,
+          maxWidth: 160,
+          style: {
+            colors: [
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+            ],
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          show: true,
+          align: "right",
+          minWidth: 0,
+          maxWidth: 160,
+          style: {
+            colors: [
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+              "#fff",
+            ],
+          },
+        },
+      },
+
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return VND.format(val);
+          },
+        },
+      },
+    },
+  };
 
   return (
     <>
@@ -49,13 +173,7 @@ function EChart() {
       </div>
       <div className="chart-vistior">
         <Title level={5}>Thống kê doanh thu</Title>
-        <Paragraph className="lastweek">
-          than last week <span className="bnb2">+30%</span>
-        </Paragraph>
-        <Paragraph className="lastweek">
-          We have created multiple options for you to put together and customise
-          into pixel perfect pages.
-        </Paragraph>
+        <br /> <br />
         <Row gutter>
           {items.map((v, index) => (
             <Col xs={6} xl={6} sm={6} md={6} key={index}>
@@ -69,6 +187,6 @@ function EChart() {
       </div>
     </>
   );
-}
+};
 
 export default EChart;

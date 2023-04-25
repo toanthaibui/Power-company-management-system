@@ -70,6 +70,10 @@ const BillAdmin = () => {
       dataIndex: "price",
     },
     {
+      title: "Quận/Huyện",
+      dataIndex: "district",
+    },
+    {
       title: "Trạng thái",
       dataIndex: "status",
       render: (text, record) => (

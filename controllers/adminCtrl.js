@@ -7,7 +7,7 @@ const electricModel = require("../models/electricModel");
 
 const getAllUsersController = async (req, res) => {
   try {
-    const users = await userModel.find({});
+    const users = await userModel.find({}).sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "users data list",
@@ -43,7 +43,7 @@ const getAllPricesController = async (req, res) => {
 
 const getAllStaffsController = async (req, res) => {
   try {
-    const staffs = await staffModel.find({});
+    const staffs = await staffModel.find({}).sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "Staffs data list",
@@ -117,12 +117,16 @@ const getCustomerElectricNoteController = async (req, res) => {
     const date = new Date();
     const day = date.toISOString();
     const staff = await staffModel.findOne({ userId: req.body.userId });
-    const schedules = await scheduleModel.findOne({
+    const schedules = await scheduleModel.find({
       staffId: staff._id,
       begin: { $lte: new Date(day) },
       end: { $gte: new Date(day) },
     });
-    const customer = await customerModel.find({ district: schedules.district });
+    const customer = await customerModel.find({
+      district: schedules.map(function (e) {
+        return e.district;
+      }),
+    });
     res.status(200).send({
       success: true,
       message: "Staffs data list",
@@ -140,7 +144,7 @@ const getCustomerElectricNoteController = async (req, res) => {
 
 const getAllCustomersController = async (req, res) => {
   try {
-    const customers = await customerModel.find({});
+    const customers = await customerModel.find({}).sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "Dữ liệu danh sách khách hàng",
@@ -528,12 +532,121 @@ const SearchCustomerController = async (req, res) => {
   }
 };
 
+const SearchBillController = async (req, res) => {
+  try {
+    const electric =
+      req.body.field === "district"
+        ? await electricModel.find({ district: req.body.keyword })
+        : req.body.field === "price"
+        ? await electricModel.find({ price: req.body.keyword })
+        : req.body.field === "score"
+        ? await electricModel.find({ score: req.body.keyword })
+        : req.body.field === "date"
+        ? await electricModel.find({ date: req.body.keyword })
+        : req.body.field === "status"
+        ? await electricModel.find({ status: req.body.keyword })
+        : await electricModel.find({});
+    res.status(200).send({
+      success: true,
+      message: "Single staff info fetched",
+      data: electric,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in single staff info",
+    });
+  }
+};
+
 const totalController = async (req, res) => {
   try {
     const customer = await customerModel.find({}).count();
     const user = await userModel.find({}).count();
     const staff = await staffModel.find({}).count();
     const bill = await electricModel.find({}).count();
+
+    const price = await electricModel.aggregate([
+      {
+        $group: {
+          _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        $limit: 12,
+      },
+    ]);
+    const price_area = await electricModel.aggregate([
+      {
+        $group: {
+          _id: { district: "$district" },
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const sum = await electricModel.aggregate([
+      {
+        $group: {
+          _id: {},
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const monthnew = await electricModel.aggregate([
+      {
+        $group: {
+          _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    const customer_donut = await customerModel.aggregate([
+      {
+        $group: {
+          _id: { district: "$district" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const customer_donut_purpose = await customerModel.aggregate([
+      {
+        $group: {
+          _id: { purpose: "$purpose" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const customer_donut_status = await customerModel.aggregate([
+      {
+        $group: {
+          _id: { status: "$status" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
 
     res.status(200).send({
       success: true,
@@ -542,6 +655,13 @@ const totalController = async (req, res) => {
       user,
       staff,
       bill,
+      price,
+      sum,
+      monthnew,
+      customer_donut,
+      customer_donut_purpose,
+      customer_donut_status,
+      price_area,
     });
   } catch (error) {
     console.log(error);
@@ -577,6 +697,7 @@ module.exports = {
   SearchStaffController,
   SearchUserController,
   SearchCustomerController,
+  SearchBillController,
   totalController,
   billStatusController,
 };

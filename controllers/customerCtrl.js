@@ -97,9 +97,11 @@ const updateProfileCustomerController = async (req, res) => {
 const getElectricCustomerUserController = async (req, res) => {
   try {
     const customer = await customerModel.findOne({ userId: req.body.userId });
-    const electric = await electricModel.find({
-      customerId: customer._id,
-    });
+    const electric = await electricModel
+      .find({
+        customerId: customer._id,
+      })
+      .sort({ date: -1 });
     res.status(200).send({
       success: true,
       message: "Single staff info fetched",
@@ -115,10 +117,62 @@ const getElectricCustomerUserController = async (req, res) => {
   }
 };
 
+const priceMonthController = async (req, res) => {
+  try {
+    const price_month = await electricModel.aggregate([
+      { $match: { customerId: req.body.customerId } },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$date" },
+            month: { $month: "$date" },
+          },
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        $limit: 12,
+      },
+    ]);
+
+    const sum = await electricModel.aggregate([
+      { $match: { customerId: req.body.customerId } },
+      {
+        $group: {
+          _id: {},
+          totalAmount: { $sum: "$price" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.status(200).send({
+      success: true,
+      message: "users data list",
+      price_month,
+      sum,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "erorr while fetching users",
+      error,
+    });
+  }
+};
+
 module.exports = {
   updatePasswordController,
   getCustomerInfoController,
   updateProfileCustomerController,
   getCustomerByIdController,
   getElectricCustomerUserController,
+  priceMonthController,
 };

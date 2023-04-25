@@ -39,6 +39,7 @@ import SearchUser from "./pages/admin/SearchUser";
 import SearchCustomer from "./pages/admin/SearchCustomer";
 import SearchBill from "./pages/admin/SearchBill";
 import Statistical from "./pages/admin/Statistical";
+import SearchSchedule from "./pages/admin/SearchSchedule";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -129,6 +130,14 @@ function App() {
               }
             />
             <Route
+              path="/admin/search-schedule"
+              element={
+                <ProtectedRoute>
+                  <SearchSchedule />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/admin/purpose"
               element={
                 <ProtectedRoute>
@@ -193,7 +202,7 @@ function App() {
               }
             />
             <Route
-              path="/customer/score-month/:userId"
+              path="/customer/score-month/:userId/:customerId"
               element={
                 <ProtectedRoute>
                   <ScoreMonth />

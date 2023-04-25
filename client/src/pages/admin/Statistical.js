@@ -4,6 +4,11 @@ import axios from "axios";
 import { Card, Col, Row, Typography } from "antd";
 import Echart from "../../components/chart/EChart";
 import LineChart from "../../components/chart/LineChart";
+import DonutChart from "../../components/chart/DonutChart";
+import DonutChartPurpose from "../../components/chart/DonutChartPurpose";
+import DonutChartStatus from "../../components/chart/DonutChartStatus";
+import EChartArea from "../../components/chart/EChartArea";
+import DonutChartArea from "../../components/chart/DonutChartArea";
 
 const Statistical = () => {
   const [total, setTotal] = useState([]);
@@ -83,14 +88,39 @@ const Statistical = () => {
           ))}
         </Row>
         <Row gutter={[24, 0]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
+            <Card bordered={false} className="criclebox h-full">
+              <Echart total={total} />
+            </Card>
+          </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
             <Card bordered={false} className="criclebox h-full">
-              <Echart />
+              <LineChart total={total} />
             </Card>
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
             <Card bordered={false} className="criclebox h-full">
-              <LineChart />
+              <EChartArea total={total} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
+            <Card bordered={false} className="criclebox h-full">
+              <DonutChartArea total={total} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
+            <Card bordered={false} className="criclebox h-full">
+              <DonutChart total={total} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
+            <Card bordered={false} className="criclebox h-full">
+              <DonutChartPurpose total={total} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
+            <Card bordered={false} className="criclebox h-full">
+              <DonutChartStatus total={total} />
             </Card>
           </Col>
         </Row>
