@@ -3,8 +3,8 @@ import Layout from "./../../components/Layout";
 import Main from "../../components/layout/Main";
 
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-import { Col, Form, Input, Row, message, Select, Card } from "antd";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { Col, Form, Input, Row, message, Select, Card, Button } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/features/alertSlice";
@@ -133,6 +133,13 @@ const ProfileCustomer = () => {
         bordered={false}
         className="criclebox  mb-24"
         title="Hồ sơ đăng ký lắp đặt điện"
+        extra={
+          <Link to={`/print/${customer?.userId}`}>
+            <Button className="tag-primary" type="primary">
+              Xem biên bản
+            </Button>
+          </Link>
+        }
       >
         {customer && (
           <Form
