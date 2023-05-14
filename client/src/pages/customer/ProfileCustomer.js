@@ -129,6 +129,9 @@ const ProfileCustomer = () => {
 
   return (
     <Main>
+      <br />
+      <br />
+      <br />
       <Card
         bordered={false}
         className="criclebox  mb-24"
@@ -270,7 +273,7 @@ const ProfileCustomer = () => {
               <Col xs={24} md={24} lg={8}></Col>
               <Col xs={24} md={24} lg={8}>
                 <button className="btn btn-primary form-btn" type="submit">
-                  Đăng ký
+                  Cập nhật
                 </button>
               </Col>
             </Row>

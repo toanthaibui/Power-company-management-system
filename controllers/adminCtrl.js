@@ -78,7 +78,9 @@ const getAllSchedulesController = async (req, res) => {
 const getSchedulesStaffController = async (req, res) => {
   try {
     const staff = await staffModel.findOne({ userId: req.body.userId });
-    const schedules = await scheduleModel.find({ staffId: staff._id });
+    const schedules = await scheduleModel
+      .find({ staffId: staff._id })
+      .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "Staffs data list",
@@ -119,8 +121,8 @@ const getCustomerElectricNoteController = async (req, res) => {
     const staff = await staffModel.findOne({ userId: req.body.userId });
     const schedules = await scheduleModel.find({
       staffId: staff._id,
-      begin: { $lte: new Date(day) },
-      end: { $gte: new Date(day) },
+      begin: { $lte: new Date().toISOString() },
+      end: { $gte: new Date().toISOString() },
     });
     const customer = await customerModel.find({
       district: schedules.map(function (e) {
@@ -362,7 +364,7 @@ const updateScheduleController = async (req, res) => {
 
 const getAllBillsController = async (req, res) => {
   try {
-    const bills = await electricModel.find({});
+    const bills = await electricModel.find({}).sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "users data list",

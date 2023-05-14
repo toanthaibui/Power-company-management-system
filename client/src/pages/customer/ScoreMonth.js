@@ -121,6 +121,7 @@ const ScoreMonth = () => {
     {
       title: "Giá",
       dataIndex: "price",
+      render: (text, record) => <h>{VND.format(record.price)}</h>,
     },
     {
       title: "Trạng thái",
@@ -144,6 +145,10 @@ const ScoreMonth = () => {
             <Button className="tag-primary" type="primary">
               Chi tiết hóa đơn
             </Button>
+          </Link>
+          &nbsp; &nbsp;
+          <Link to={`/staff/print-bill/${record._id}/${record.customerId}`}>
+            <Button className="">Xem hóa đơn</Button>
           </Link>
         </div>
       ),

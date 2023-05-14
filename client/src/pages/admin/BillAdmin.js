@@ -8,6 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 
 const BillAdmin = () => {
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
   const [bills, setBills] = useState([]);
   const getBills = async () => {
     try {
@@ -68,6 +72,7 @@ const BillAdmin = () => {
     {
       title: "Giá",
       dataIndex: "price",
+      render: (text, record) => <h>{VND.format(record.price)}</h>,
     },
     {
       title: "Quận/Huyện",

@@ -165,7 +165,7 @@ const SearchBill = () => {
                 <h6 className="font-semibold m-0">Danh sách tìm kiếm</h6>,
               ]}
               bodyStyle={{ paddingTop: "0" }}
-              extra={<h6 className="font-semibold m-0">Tài khoản</h6>}
+              extra={<h6 className="font-semibold m-0">Hóa đơn</h6>}
             >
               <div className="table-responsive">
                 <Table

@@ -121,7 +121,7 @@ const Purpose = () => {
       render: (text, record) => (
         <div className="avatar-info">
           <Title level={5}>{record.name}</Title>
-          <p>{record.price}</p>
+          <p>{VND.format(record.price)}</p>
         </div>
       ),
     },
@@ -140,6 +140,10 @@ const Purpose = () => {
       ),
     },
   ];
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
 
   useEffect(() => {
     getPrices();
@@ -169,7 +173,7 @@ const Purpose = () => {
                 required
                 rules={[{ required: true }]}
               >
-                <Input type="text" placeholder="Nhập tên dịch vụ" />
+                <Input type="text" placeholder="Nhập giá dịch vụ" />
               </FormItem>
               <button className="btn btn-primary form-btn" type="submit">
                 Thêm

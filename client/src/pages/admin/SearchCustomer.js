@@ -189,7 +189,7 @@ const SearchCustomer = () => {
                 <h6 className="font-semibold m-0">Danh sách tìm kiếm</h6>,
               ]}
               bodyStyle={{ paddingTop: "0" }}
-              extra={<h6 className="font-semibold m-0">Nhân viên</h6>}
+              extra={<h6 className="font-semibold m-0">Khách hàng</h6>}
             >
               <div className="table-responsive">
                 <Table

@@ -84,7 +84,7 @@ const NotificationPage = () => {
               <div className="card" style={{ cursor: "pointer" }}>
                 <div
                   className="card-text"
-                  onClick={() => navigate(notificationMgs.onClickPath)}
+                  onClick={() => navigate(notificationMgs.data.onClickPath)}
                 >
                   <p>{notificationMgs.message}</p>
                 </div>

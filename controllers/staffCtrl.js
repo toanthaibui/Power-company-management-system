@@ -91,9 +91,11 @@ const setElectricNoteController = async (req, res) => {
 
 const getElectricCustomerController = async (req, res) => {
   try {
-    const electric = await electricModel.find({
-      customerId: req.body.customerId,
-    });
+    const electric = await electricModel
+      .find({
+        customerId: req.body.customerId,
+      })
+      .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "Single staff info fetched",

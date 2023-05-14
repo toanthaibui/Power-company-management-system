@@ -114,11 +114,20 @@ const Customers = () => {
               </Button>
             </div>
           ) : (
-            <Link to={`/print/${record.userId}`}>
-              <Button className="tag-primary" type="primary">
-                Lập biên bản
+            <div>
+              <Link to={`/print/${record.userId}`}>
+                <Button className="btn btn-info" type="primary">
+                  Lập biên bản
+                </Button>
+              </Link>
+              &nbsp; &nbsp;
+              <Button
+                className="tag-badge"
+                onClick={() => handleAccountStatus(record, "2")}
+              >
+                Xóa
               </Button>
-            </Link>
+            </div>
           )}
         </div>
       ),

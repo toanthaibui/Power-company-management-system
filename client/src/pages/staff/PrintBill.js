@@ -4,11 +4,13 @@ import { useReactToPrint } from "react-to-print";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const PrintBill = () => {
   const componentRef = useRef();
   const [electric, setElectric] = useState();
   const [customer, setCustomer] = useState();
+  const { user } = useSelector((state) => state.user);
 
   const params = useParams();
 
@@ -65,68 +67,137 @@ const PrintBill = () => {
     getElectricInfo();
     getCustomerInfo();
   }, []);
-  return (
-    <>
-      <button
-        className="btn btn-primary print"
-        style={{ margin: 20 }}
-        onClick={handlePrint}
-      >
-        In hóa đơn
-      </button>
-      <div className="ticket timenew" ref={componentRef}>
-        <h8>
-          Ngày tạo hóa đơn: {moment(electric?.updatedAt).format("DD-MM-YYYY")}
-        </h8>
-        <br />
-        <br />
-        <p className="text-center">
-          Công ty điện Cần Thơ
+  if (user?.isStaff) {
+    return (
+      <>
+        <button
+          className="btn btn-primary print"
+          style={{ margin: 20 }}
+          onClick={handlePrint}
+        >
+          In hóa đơn
+        </button>
+        <div className="ticket timenew" ref={componentRef}>
+          <h8>
+            Ngày tạo hóa đơn: {moment(electric?.updatedAt).format("DD-MM-YYYY")}
+          </h8>
           <br />
-          Địa chỉ: Xuân Khánh, Ninh Kiều
           <br />
-          <b>HÓA ĐƠN TIỀN ĐIỆN</b>
+          <p className="text-center">
+            Công ty điện Cần Thơ
+            <br />
+            Địa chỉ: Xuân Khánh, Ninh Kiều
+            <br />
+            <b>HÓA ĐƠN TIỀN ĐIỆN</b>
+            <br />
+            <b>{moment(electric?.date).format("MM-YYYY")}</b>
+          </p>
+          <p>
+            Khách hàng: {customer?.fullName}
+            <br />
+            Địa Chỉ: {customer?.numberHouse}, {customer?.road}, {customer?.ward}
+            , {customer?.district}
+            <br />
+          </p>
+          <table className="tablebill">
+            <thead className="tablebill">
+              <tr className="tablebill">
+                <th className="quantity tablebill">Chỉ số</th>
+                <th className="description tablebill">Hình thức</th>
+                <th className="price tablebill">Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="quantity tablebill">{electric?.score}</td>
+                <td className="description tablebill">{customer?.purpose}</td>
+                <td className="price tablebill">
+                  {VND.format(electric?.price / electric?.score)}
+                </td>
+              </tr>
+              <tr>
+                <td className="quantity tablebill"></td>
+                <td className="description tablebill">Tổng </td>
+                <td className="price tablebill">
+                  {VND.format(electric?.price)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <br />
-          <b>{moment(electric?.date).format("MM-YYYY")}</b>
-        </p>
-        <p>
-          Khách hàng: {customer?.fullName}
           <br />
-          Địa Chỉ: {customer?.numberHouse}, {customer?.road}, {customer?.ward},{" "}
-          {customer?.district}
           <br />
-        </p>
-        <table className="tablebill">
-          <thead className="tablebill">
-            <tr className="tablebill">
-              <th className="quantity tablebill">Chỉ số</th>
-              <th className="description tablebill">Hình thức</th>
-              <th className="price tablebill">Giá</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="quantity tablebill">{electric?.score}</td>
-              <td className="description tablebill">{customer?.purpose}</td>
-              <td className="price tablebill">
-                {VND.format(electric?.price / electric?.score)}
-              </td>
-            </tr>
-            <tr>
-              <td className="quantity tablebill"></td>
-              <td className="description tablebill">Tổng </td>
-              <td className="price tablebill">{VND.format(electric?.price)}</td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-        <br />
-        <br />
-        <br />
-        <p>Liên hệ số điện thoại 123456 nếu có vấn đề</p>
-      </div>
-    </>
-  );
+          <br />
+          <p>Liên hệ số điện thoại 123456 nếu có vấn đề</p>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <button
+          className="btn btn-primary print"
+          style={{ margin: 20 }}
+          onClick={handlePrint}
+        >
+          Xem hóa đơn
+        </button>
+        <div className="ticket timenew" ref={componentRef}>
+          <h8>
+            Ngày tạo hóa đơn: {moment(electric?.updatedAt).format("DD-MM-YYYY")}
+          </h8>
+          <br />
+          <br />
+          <p className="text-center">
+            Công ty điện Cần Thơ
+            <br />
+            Địa chỉ: Xuân Khánh, Ninh Kiều
+            <br />
+            <b>HÓA ĐƠN TIỀN ĐIỆN</b>
+            <br />
+            <b>{moment(electric?.date).format("MM-YYYY")}</b>
+          </p>
+          <p>
+            Khách hàng: {customer?.fullName}
+            <br />
+            Địa Chỉ: {customer?.numberHouse}, {customer?.road}, {customer?.ward}
+            , {customer?.district}
+            <br />
+          </p>
+          <table className="tablebill">
+            <thead className="tablebill">
+              <tr className="tablebill">
+                <th className="quantity tablebill">Chỉ số</th>
+                <th className="description tablebill">Hình thức</th>
+                <th className="price tablebill">Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="quantity tablebill">{electric?.score}</td>
+                <td className="description tablebill">{customer?.purpose}</td>
+                <td className="price tablebill">
+                  {VND.format(electric?.price / electric?.score)}
+                </td>
+              </tr>
+              <tr>
+                <td className="quantity tablebill"></td>
+                <td className="description tablebill">Tổng </td>
+                <td className="price tablebill">
+                  {VND.format(electric?.price)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <br />
+          <br />
+          <br />
+          <p>Liên hệ số điện thoại 123456 nếu có vấn đề</p>
+        </div>
+      </>
+    );
+  }
 };
 
 export default PrintBill;

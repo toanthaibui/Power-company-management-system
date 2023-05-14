@@ -9,6 +9,10 @@ import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import Main from "../../components/layout/Main";
 
 const AllElectricNote = () => {
+  const VND = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
   const params = useParams();
   const [customer, setCustomer] = useState();
   const [electric, setElectric] = useState([]);
@@ -111,6 +115,7 @@ const AllElectricNote = () => {
     {
       title: "Giá",
       dataIndex: "price",
+      render: (text, record) => <h>{VND.format(record.price)}</h>,
     },
     {
       title: "Trạng thái",

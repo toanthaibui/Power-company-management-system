@@ -182,10 +182,10 @@ const Profile = () => {
                   rules={[{ required: true }]}
                 >
                   <Select placeholder="Chọn trình độ của bạn">
-                    <Option>Phổ thông</Option>
-                    <Option>Trung cấp</Option>
-                    <Option>Cao đẳng</Option>
-                    <Option>Đại học</Option>
+                    <Option value="Phổ thông">Phổ thông</Option>
+                    <Option value="Trung cấp">Trung cấp</Option>
+                    <Option value="Cao đăng">Cao đẳng</Option>
+                    <Option value="Đại học">Đại học</Option>
                   </Select>
                 </FormItem>
               </Col>
